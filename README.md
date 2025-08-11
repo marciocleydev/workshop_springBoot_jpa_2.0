@@ -20,10 +20,10 @@ Projeto construído durante o curso [Java COMPLETO - Nelio Alves](https://devsup
 ## 📂 Estrutura do Projeto
 
 src/main/java
-├── entities # Modelos e mapeamento JPA
-├── repositories # Interfaces de acesso ao banco
-├── services # Regras de negócio
-└── resources # Controladores REST
+- ├── entities # Modelos e mapeamento JPA
+- ├── repositories # Interfaces de acesso ao banco
+- ├── services # Regras de negócio
+- └── resources # Controladores REST
 
 ---
 
@@ -50,16 +50,16 @@ src/main/java
 
 ### Perfil de Teste (H2)
 ```properties```
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-Perfil de Desenvolvimento (MySQL)
+- spring.datasource.driverClassName=org.h2.Driver
+- spring.datasource.url=jdbc:h2:mem:testdb
+- spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+- Perfil de Desenvolvimento (MySQL)
 
-properties
-spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco
-spring.datasource.username=root
-spring.datasource.password=senha
-spring.jpa.hibernate.ddl-auto=update
+```properties```: 
+- spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco
+- spring.datasource.username=root
+- spring.datasource.password=senha
+- spring.jpa.hibernate.ddl-auto=update
 
 ▶️ Executando o Projeto
 
@@ -74,12 +74,12 @@ cd workshop_springBoot_jpa_2.0
 A aplicação estará disponível em:
 ➡️ http://localhost:8080
 
-📬 Endpoints Principais
+#📬 Endpoints Principais
 Método	Endpoint	Descrição
-GET	/users	Lista todos usuários
-GET	/users/{id}	Busca por ID
-POST	/users	Cadastra novo usuário
-PUT	/users/{id}	Atualiza usuário
-DELETE	/users/{id}	Remove usuário
+- GET	/users	Lista todos usuários
+- GET	/users/{id}	Busca por ID
+- POST	/users	Cadastra novo usuário
+- PUT	/users/{id}	Atualiza usuário
+- DELETE	/users/{id}	Remove usuário
 # 🛒 Workshop Spring Boot JPA / Hibernate
 
