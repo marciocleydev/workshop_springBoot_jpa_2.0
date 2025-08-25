@@ -8,7 +8,7 @@ spring:
     password: 81050050
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
     properties:
       hibernete:
@@ -16,5 +16,13 @@ spring:
     show-sql: false
 logging:
   level:
-        #por padrão a pasta raiz já fica setada como info.
-    com.myProject: debug
+    root: INFO #projeto completo.
+
+    com.myProject: DEBUG  # Pacote raiz do PROJETO!
+
+    # Logs do Spring Web (para ver resolução de exceções e endpoints)
+    org.springframework.web: DEBUG
+
+    # Reduce ruído de outros módulos
+    org.hibernate: ERROR
+    org.springframework.transaction: ERROR

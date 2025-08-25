@@ -1,6 +1,9 @@
 package com.myProject.SpringSalesApp.services;
 
+import com.myProject.SpringSalesApp.DTO.ProductDTO;
 import com.myProject.SpringSalesApp.entities.Product;
+import static com.myProject.SpringSalesApp.mapper.ObjectMapper.parseObject;
+import static com.myProject.SpringSalesApp.mapper.ObjectMapper.parseListObjects;
 import com.myProject.SpringSalesApp.repositories.ProductRepository;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
@@ -20,26 +23,25 @@ public class ProductService {
     ProductRepository repository;
     private Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
 
-    public List<Product> findAll(){
-        return repository.findAll();
+    public List<ProductDTO> findAll(){
+        return parseListObjects(repository.findAll(),ProductDTO.class); //no import lá em cima eu coloquei static para importar apenas o método da minha classe ObjectMapper.
     }
-    public Product findById(Long id) {
+    public ProductDTO findById(Long id) {
         logger.info("Finding one Product!");
-        logger.debug("DEBUG MODE: tentando buscar produto com id {}", id);
-        return  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return  parseObject(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)),ProductDTO.class);
     }
 
-    public Product insert(Product product){
+    public ProductDTO insert(ProductDTO product){
         logger.info("Creating a new product!");
-        return repository.save(product);
+        return parseObject(repository.save(parseObject(product,Product.class)),ProductDTO.class);
     }
-    public Product updateById(Product newProduct, Long id){
+    public ProductDTO updateById(ProductDTO newProductDTO, Long id){
         logger.info("Updating one product!");
         Product oldProduct = repository.getReferenceById(id);
-        updateGeneration(oldProduct,newProduct);
-        return repository.save(oldProduct);
+        updateGeneration(oldProduct,newProductDTO);
+        return parseObject(repository.save(parseObject(oldProduct,Product.class)),ProductDTO.class);
     }
-    private void updateGeneration(Product oldProduct, Product newProduct){
+    private void updateGeneration(Product oldProduct, ProductDTO newProduct){
         oldProduct.setName(newProduct.getName());
         oldProduct.setDescription(newProduct.getDescription());
         oldProduct.setImgUrl(newProduct.getImgUrl());

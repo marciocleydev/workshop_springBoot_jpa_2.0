@@ -1,5 +1,6 @@
 package com.myProject.SpringSalesApp.controllers;
 
+import com.myProject.SpringSalesApp.DTO.ProductDTO;
 import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +19,24 @@ public class ProductResource {
     private ProductService service;
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAll(){
-        List<Product> products = service.findAll();
+    public ResponseEntity<List<ProductDTO>> findAll(){
+        List<ProductDTO> products = service.findAll();
         return ResponseEntity.ok().body(products);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id){
-        Product product = service.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
+        ProductDTO product = service.findById(id);
         return ResponseEntity.ok().body(product);
     }
     @PostMapping
-    public ResponseEntity<Product> insert(@RequestBody Product product){
-        Product product1 = service.insert(product);
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product){
+        ProductDTO product1 = service.insert(product);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product1.getId()).toUri();
         return ResponseEntity.created(uri).body(product1);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Product> updateById(@RequestBody Product product,@PathVariable Long id){
-        Product product1 = service.updateById(product,id);
+    public ResponseEntity<ProductDTO> updateById(@RequestBody ProductDTO product,@PathVariable Long id){
+        ProductDTO product1 = service.updateById(product,id);
         return ResponseEntity.ok().body(product1);
     }
     @DeleteMapping(value = "/{id}")
