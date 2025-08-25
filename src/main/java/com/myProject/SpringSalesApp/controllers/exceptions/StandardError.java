@@ -1,4 +1,4 @@
-package com.myProject.SpringSalesApp.resources.exceptions;
+package com.myProject.SpringSalesApp.controllers.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

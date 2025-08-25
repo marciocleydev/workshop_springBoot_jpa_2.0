@@ -1,39 +1,40 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.entities.Product;
-import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.repositories.ProductRepository;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ProductService {
     @Autowired
     ProductRepository repository;
+    private Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
 
     public List<Product> findAll(){
         return repository.findAll();
     }
-    public Product findById(Long id){
-        try {
-            Optional<Product> product = repository.findById(id);
-            return product.get();
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(id);
-        }
+    public Product findById(Long id) {
+        logger.info("Finding one Product!");
+        logger.debug("DEBUG MODE: tentando buscar produto com id {}", id);
+        return  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
+
     public Product insert(Product product){
+        logger.info("Creating a new product!");
         return repository.save(product);
     }
     public Product updateById(Product newProduct, Long id){
+        logger.info("Updating one product!");
         Product oldProduct = repository.getReferenceById(id);
         updateGeneration(oldProduct,newProduct);
         return repository.save(oldProduct);
@@ -45,6 +46,7 @@ public class ProductService {
         oldProduct.setPrice(newProduct.getPrice());
     }
     public void deleteById(Long id) {
+        logger.info("Deleting one product!");
         try {
             repository.deleteById(id);
         }

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: rest-spring-boot-and-java
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/salesApp?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: 81050050
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernete:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: false
+logging:
+  level:
+        #por padrão a pasta raiz já fica setada como info.
+    com.myProject: debug

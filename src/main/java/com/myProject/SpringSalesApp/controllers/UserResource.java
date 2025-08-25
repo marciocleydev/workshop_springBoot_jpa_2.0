@@ -1,4 +1,4 @@
-package com.myProject.SpringSalesApp.resources;
+package com.myProject.SpringSalesApp.controllers;
 
 import com.myProject.SpringSalesApp.entities.User;
 import com.myProject.SpringSalesApp.services.UserService;

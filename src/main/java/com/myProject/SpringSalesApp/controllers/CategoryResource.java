@@ -1,6 +1,5 @@
-package com.myProject.SpringSalesApp.resources;
+package com.myProject.SpringSalesApp.controllers;
 
-import com.myProject.SpringSalesApp.entities.Category;
 import com.myProject.SpringSalesApp.entities.Category;
 import com.myProject.SpringSalesApp.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
