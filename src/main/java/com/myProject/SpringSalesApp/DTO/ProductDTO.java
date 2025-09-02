@@ -1,16 +1,30 @@
 package com.myProject.SpringSalesApp.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serial;
 import java.io.Serializable;
 
-public class ProductDTO implements Serializable {
+@JsonPropertyOrder({"id","name","price","description","imgUrl"})
+public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
         private Long id;
+        @JsonProperty("Name")
         private String name;
+    @JsonProperty("Description")
         private String description;
+    @JsonProperty("Preço")
         private Double price;
+    @JsonIgnore
         private String imgUrl;
+    /*
+    @JsonFormat(pattern = "dd/MM/yyyy")
+        private LocalDate factDate;
+     */
 
         public ProductDTO(){
         }

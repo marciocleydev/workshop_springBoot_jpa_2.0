@@ -1,12 +1,13 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.DTO.ProductDTO;
+import com.myProject.SpringSalesApp.controllers.ProductResource;
 import com.myProject.SpringSalesApp.entities.Product;
-import static com.myProject.SpringSalesApp.mapper.ObjectMapper.parseObject;
-import static com.myProject.SpringSalesApp.mapper.ObjectMapper.parseListObjects;
+import com.myProject.SpringSalesApp.mapper.ProductMapper;
 import com.myProject.SpringSalesApp.repositories.ProductRepository;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +17,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ProductService {
     @Autowired
     ProductRepository repository;
-    private Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
+    @Autowired
+    ProductMapper productMapper;
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public List<ProductDTO> findAll(){
-        return parseListObjects(repository.findAll(),ProductDTO.class); //no import lá em cima eu coloquei static para importar apenas o método da minha classe ObjectMapper.
+        var dtoList = productMapper.toDtoList(repository.findAll());
+        dtoList.forEach(this::addHateoasLinks);
+        return dtoList;
     }
     public ProductDTO findById(Long id) {
         logger.info("Finding one Product!");
-        return  parseObject(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)),ProductDTO.class);
+        var dto = productMapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public ProductDTO insert(ProductDTO product){
         logger.info("Creating a new product!");
-        return parseObject(repository.save(parseObject(product,Product.class)),ProductDTO.class);
+        var dto = productMapper.toDTO(repository.save(productMapper.toEntity(product)));
+        addHateoasLinks(dto);
+        return dto;
     }
+
     public ProductDTO updateById(ProductDTO newProductDTO, Long id){
         logger.info("Updating one product!");
-        Product oldProduct = repository.getReferenceById(id);
-        updateGeneration(oldProduct,newProductDTO);
-        return parseObject(repository.save(parseObject(oldProduct,Product.class)),ProductDTO.class);
+        try {
+            Product oldProduct = repository.getReferenceById(id);
+            updateGeneration(oldProduct, newProductDTO);
+            var dto = productMapper.toDTO(repository.save(oldProduct));
+            addHateoasLinks(dto);
+            return dto;
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
     private void updateGeneration(Product oldProduct, ProductDTO newProduct){
         oldProduct.setName(newProduct.getName());
@@ -58,5 +76,12 @@ public class ProductService {
         catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException(e.getMessage());
         }
+    }
+    private void addHateoasLinks(ProductDTO dto) {
+        dto.add(linkTo(methodOn(ProductResource.class).findById(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(ProductResource.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
+        dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(ProductResource.class).insert(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(ProductResource.class).updateById(dto,dto.getId())).withRel("update").withType("PUT"));
     }
 }
