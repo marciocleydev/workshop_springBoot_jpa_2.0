@@ -26,3 +26,7 @@ logging:
     # Reduce ruído de outros módulos
     org.hibernate: ERROR
     org.springframework.transaction: ERROR
+springdoc:
+  pathsToMatch: /**
+  swagger-ui:
+    use-root-path: true

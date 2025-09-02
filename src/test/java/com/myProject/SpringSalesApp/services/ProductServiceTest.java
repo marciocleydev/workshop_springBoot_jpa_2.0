@@ -260,24 +260,62 @@ class ProductServiceTest {
         assertNotNull(result);
         assertEquals(20, result.size());
 
-        var productDTO = result.get(1);
+        var productDTO1 = result.get(1);
 
-        assertNotNull(productDTO);
-        assertNotNull(productDTO.getLinks());
+        assertNotNull(productDTO1);
+        assertNotNull(productDTO1.getLinks());
 
-        Long expectedId = productDTO.getId();
-        assertNotNull(expectedId, "ID do DTO não deveria ser nulo");
+        Long expectedId1 = productDTO1.getId();
+        assertNotNull(expectedId1, "ID do DTO não deveria ser nulo");
 
-        boolean hasSelfLink = productDTO.getLinks().stream()
+        boolean hasSelfLink1 = productDTO1.getLinks().stream()
                 .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/products/" + expectedId)
+                        && link.getHref().endsWith("/products/" + expectedId1)
                         && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink, "Link self ausente ou incorreto para o item da lista");
+        assertTrue(hasSelfLink1, "Link self ausente ou incorreto para o item da lista");
 
-        assertEquals("name test1", productDTO.getName());
-        assertEquals("setImgUrl1", productDTO.getImgUrl());
-        assertEquals(1.0, productDTO.getPrice());
-        assertEquals("descrição de test numero:1", productDTO.getDescription());
+        assertEquals("name test1", productDTO1.getName());
+        assertEquals("setImgUrl1", productDTO1.getImgUrl());
+        assertEquals(1.0, productDTO1.getPrice());
+        assertEquals("descrição de test numero:1", productDTO1.getDescription());
+
+        var productDTO5 = result.get(5);
+
+        assertNotNull(productDTO5);
+        assertNotNull(productDTO5.getLinks());
+
+        Long expectedId5 = productDTO5.getId();
+        assertNotNull(expectedId5, "ID do DTO não deveria ser nulo");
+
+        boolean hasSelfLink5 = productDTO5.getLinks().stream()
+                .anyMatch(link -> "self".equals(link.getRel().value())
+                        && link.getHref().endsWith("/products/" + expectedId5)
+                        && "GET".equals(link.getType()));
+        assertTrue(hasSelfLink5, "Link self ausente ou incorreto para o item da lista");
+
+        assertEquals("name test5", productDTO5.getName());
+        assertEquals("setImgUrl5", productDTO5.getImgUrl());
+        assertEquals(5.0, productDTO5.getPrice());
+        assertEquals("descrição de test numero:5", productDTO5.getDescription());
+
+        var productDTO15 = result.get(15);
+
+        assertNotNull(productDTO15);
+        assertNotNull(productDTO15.getLinks());
+
+        Long expectedId15 = productDTO15.getId();
+        assertNotNull(expectedId15, "ID do DTO não deveria ser nulo");
+
+        boolean hasSelfLink15 = productDTO15.getLinks().stream()
+                .anyMatch(link -> "self".equals(link.getRel().value())
+                        && link.getHref().endsWith("/products/" + expectedId15)
+                        && "GET".equals(link.getType()));
+        assertTrue(hasSelfLink15, "Link self ausente ou incorreto para o item da lista");
+
+        assertEquals("name test15", productDTO15.getName());
+        assertEquals("setImgUrl15", productDTO15.getImgUrl());
+        assertEquals(15.0, productDTO15.getPrice());
+        assertEquals("descrição de test numero:15", productDTO15.getDescription());
 
         verify(repository).findAll();
         verify(productMapper).toDtoList(list);
