@@ -1,7 +1,7 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.DTO.ProductDTO;
-import com.myProject.SpringSalesApp.controllers.ProductResource;
+import com.myProject.SpringSalesApp.controllers.ProductController;
 import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.mapper.ProductMapper;
 import com.myProject.SpringSalesApp.repositories.ProductRepository;
@@ -78,10 +78,10 @@ public class ProductService {
         }
     }
     private void addHateoasLinks(ProductDTO dto) {
-        dto.add(linkTo(methodOn(ProductResource.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(ProductResource.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
-        dto.add(linkTo(methodOn(ProductResource.class).findAll()).withRel("findAll").withType("GET"));
-        dto.add(linkTo(methodOn(ProductResource.class).insert(dto)).withRel("create").withType("POST"));
-        dto.add(linkTo(methodOn(ProductResource.class).updateById(dto,dto.getId())).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(ProductController.class).findById(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(ProductController.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
+        dto.add(linkTo(methodOn(ProductController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(ProductController.class).insert(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(ProductController.class).updateById(dto,dto.getId())).withRel("update").withType("PUT"));
     }
 }

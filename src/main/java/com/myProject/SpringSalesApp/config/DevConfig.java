@@ -25,6 +25,8 @@ public class DevConfig implements CommandLineRunner {
     ProductRepository productRepository;
     @Autowired
     OrderItemRepository orderItemRepository;
+    @Autowired
+    AddressRepository addressRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,6 +68,11 @@ public class DevConfig implements CommandLineRunner {
         Payment pay = new Payment(null,Instant.parse("2019-06-20T22:59:07Z"),o1);
         o1.setPayment(pay);
         orderRepository.save(o1);
+
+        Address address1 = new Address(null,"rua projetada","1555","mercado regina","pinheiro","Maranhão","89068-061","Brasil");
+        addressRepository.save(address1);
+        u1.setAddress(address1);
+        userRepository.save(u1);
 
     }
 }

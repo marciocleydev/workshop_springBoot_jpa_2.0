@@ -23,6 +23,10 @@ public class User implements Serializable {
     private String phone;
     private String passWord;
     @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "id_address")
+    private Address address;
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
     public User(){
@@ -74,6 +78,12 @@ public class User implements Serializable {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+    public Address getAddress() {
+        return address;
+    }
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public List<Order> getOrders() {

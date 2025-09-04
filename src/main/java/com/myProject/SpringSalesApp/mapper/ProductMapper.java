@@ -11,6 +11,7 @@ import java.util.List;
 public interface ProductMapper {
 
 
+
     ProductDTO toDTO(Product product);
     List<ProductDTO> toDtoList(List<Product> products);
 

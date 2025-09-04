@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/orders")
-public class OrderResource {
+public class OrderController {
 
     @Autowired
     private OrderService service;

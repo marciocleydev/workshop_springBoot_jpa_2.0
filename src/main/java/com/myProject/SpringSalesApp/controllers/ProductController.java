@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/products")
 @Tag(name = "Product Resource", description = "Endpoints for product management")
-public class ProductResource implements ProductResourceDocs {
+public class ProductController implements ProductResourceDocs {
 
     @Autowired
     private ProductService service;
