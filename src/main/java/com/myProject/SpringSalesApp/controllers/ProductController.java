@@ -1,7 +1,7 @@
 package com.myProject.SpringSalesApp.controllers;
 
 import com.myProject.SpringSalesApp.DTO.ProductDTO;
-import com.myProject.SpringSalesApp.controllers.docs.ProductResourceDocs;
+import com.myProject.SpringSalesApp.controllers.docs.ProductControllerDocs;
 import com.myProject.SpringSalesApp.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/products")
 @Tag(name = "Product Resource", description = "Endpoints for product management")
-public class ProductController implements ProductResourceDocs {
+public class ProductController implements ProductControllerDocs {
 
     @Autowired
     private ProductService service;
