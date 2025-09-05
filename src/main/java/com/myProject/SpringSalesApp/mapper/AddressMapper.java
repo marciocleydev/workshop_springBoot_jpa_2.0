@@ -10,7 +10,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AddressMapper{
 
-
+    @Mapping(source = "client.id",target = "idClient" )
+    @Mapping(source = "client.name",target = "nameClient" )
     AddressDTO toDTO(Address address);
 
     Address toEntity(AddressDTO dto);

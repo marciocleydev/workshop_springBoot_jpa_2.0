@@ -26,7 +26,8 @@ public class Address implements Serializable {
     private String zipCode;
     @Column(nullable = false, length = 20)
     private String country;
-    @OneToOne(mappedBy = "address")
+    @OneToOne
+    @JoinColumn(name = "id_user")
     private User client;
 
     public Address() {

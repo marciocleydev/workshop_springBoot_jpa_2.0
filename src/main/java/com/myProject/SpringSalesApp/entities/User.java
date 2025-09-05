@@ -23,8 +23,7 @@ public class User implements Serializable {
     private String phone;
     private String passWord;
     @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "id_address")
+    @OneToOne(mappedBy = "client",cascade = CascadeType.ALL)
     private Address address;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
@@ -84,6 +83,7 @@ public class User implements Serializable {
     }
     public void setAddress(Address address) {
         this.address = address;
+        this.address.setClient(this);
     }
 
     public List<Order> getOrders() {

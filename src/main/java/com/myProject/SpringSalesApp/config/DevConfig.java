@@ -70,7 +70,6 @@ public class DevConfig implements CommandLineRunner {
         orderRepository.save(o1);
 
         Address address1 = new Address(null,"rua projetada","1555","mercado regina","pinheiro","Maranhão","89068-061","Brasil");
-        addressRepository.save(address1);
         u1.setAddress(address1);
         userRepository.save(u1);
 

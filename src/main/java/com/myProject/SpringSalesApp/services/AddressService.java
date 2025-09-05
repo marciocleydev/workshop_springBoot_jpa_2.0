@@ -29,20 +29,20 @@ public class AddressService {
 
     public List<AddressDTO> findAll(){
          List<Address> addresses = repository.findAll();
-         var listAddressDTO = addresses.stream().map(this::toDTO).toList();
+         var listAddressDTO = mapper.toDtoList(addresses);
          listAddressDTO.forEach(this::addHateoasLinks);
         return listAddressDTO;
     }
     public AddressDTO findById(Long id){
         logger.info("Finding one Address!");
          Address address = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-          var addressDTO = toDTO(address);
+          var addressDTO = mapper.toDTO(address);
           addHateoasLinks(addressDTO);
         return addressDTO;
     }
     public AddressDTO insert(AddressDTO address){
         logger.info("Creating a new Address!");
-       var addressDTO = toDTO(repository.save(mapper.toEntity(address)));
+       var addressDTO = mapper.toDTO(repository.save(mapper.toEntity(address)));
        addHateoasLinks(addressDTO);
         return addressDTO;
     }
@@ -50,7 +50,7 @@ public class AddressService {
         logger.info("Updating one Address!");
         Address oldAddress = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
         updateGeneration(oldAddress,newAddress);
-         var addressDTO = toDTO(repository.save(oldAddress));
+         var addressDTO = mapper.toDTO(repository.save(oldAddress));
          addHateoasLinks(addressDTO);
         return addressDTO;
     }
@@ -74,15 +74,6 @@ public class AddressService {
         catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException(e.getMessage());
         }
-    }
-
-    private AddressDTO toDTO(Address address){
-        var addressDTO = mapper.toDTO(address);
-        if (address.getClient() != null){
-            addressDTO.setIdClient(address.getClient().getId());
-            addressDTO.setNameClient(address.getClient().getName());
-        }
-        return addressDTO;
     }
 
     private void addHateoasLinks(AddressDTO dto) {
