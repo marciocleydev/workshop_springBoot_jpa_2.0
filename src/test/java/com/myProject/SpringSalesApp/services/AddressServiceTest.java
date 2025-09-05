@@ -51,45 +51,8 @@ class AddressServiceTest {
         assertNotNull(result);
         assertNotNull(result.getLinks());
         assertNotNull(result.getId());
-
-        boolean hasSelfLink = result.getLinks().stream()
-                .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink,"O link 'self' não foi encontrado ou está incorreto");
-
-        boolean hasDeleteLink = result.getLinks().stream()
-                .anyMatch(link -> "delete".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "DELETE".equals(link.getType()));
-        assertTrue(hasDeleteLink,"O link 'delete' não foi encontrado ou está incorreto");
-
-        boolean hasCreateLink = result.getLinks().stream()
-                .anyMatch(link -> "create".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "POST".equals(link.getType()));
-        assertTrue(hasCreateLink,"O link 'create' não foi encontrado ou está incorreto");
-
-        boolean hasUpdateLink = result.getLinks().stream()
-                .anyMatch(link -> "update".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "PUT".equals(link.getType()));
-        assertTrue(hasUpdateLink, "O link 'update' não foi encontrado ou está incorreto");
-
-        boolean hasFindAllLink = result.getLinks().stream()
-                .anyMatch(link -> "findAll".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasFindAllLink, "O link 'findAll' não foi encontrado ou está incorreto");
-
-
-        assertEquals("street test1", result.getStreet());
-        assertEquals("city test1", result.getCity());
-        assertEquals("state test1", result.getState());
-        assertEquals("zipcode test1", result.getZipCode());
-        assertEquals("country test1", result.getCountry());
-        assertEquals("complement test1", result.getComplement());
-        assertEquals("100", result.getNumber());
+        assertHasHateoasLinks(result);
+        assertEqualsData(result);
 
         verify(repository).findById(1L);
         verify(mapper).toDTO(address);
@@ -111,45 +74,8 @@ class AddressServiceTest {
         assertNotNull(result);
         assertNotNull(result.getLinks());
         assertNotNull(result.getId());
-
-        boolean hasSelfLink = result.getLinks().stream()
-                .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink,"O link 'self' não foi encontrado ou está incorreto");
-
-        boolean hasDeleteLink = result.getLinks().stream()
-                .anyMatch(link -> "delete".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "DELETE".equals(link.getType()));
-        assertTrue(hasDeleteLink,"O link 'delete' não foi encontrado ou está incorreto");
-
-        boolean hasCreateLink = result.getLinks().stream()
-                .anyMatch(link -> "create".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "POST".equals(link.getType()));
-        assertTrue(hasCreateLink,"O link 'create' não foi encontrado ou está incorreto");
-
-        boolean hasUpdateLink = result.getLinks().stream()
-                .anyMatch(link -> "update".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "PUT".equals(link.getType()));
-        assertTrue(hasUpdateLink, "O link 'update' não foi encontrado ou está incorreto");
-
-        boolean hasFindAllLink = result.getLinks().stream()
-                .anyMatch(link -> "findAll".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasFindAllLink, "O link 'findAll' não foi encontrado ou está incorreto");
-
-
-        assertEquals("street test1", result.getStreet());
-        assertEquals("city test1", result.getCity());
-        assertEquals("state test1", result.getState());
-        assertEquals("zipcode test1", result.getZipCode());
-        assertEquals("country test1", result.getCountry());
-        assertEquals("complement test1", result.getComplement());
-        assertEquals("100", result.getNumber());
+        assertHasHateoasLinks(result);
+        assertEqualsData(result);
 
         verify(repository).save(entity);
         verify(mapper).toDTO(entity);
@@ -171,45 +97,8 @@ class AddressServiceTest {
         assertNotNull(result);
         assertNotNull(result.getLinks());
         assertNotNull(result.getId());
-
-        boolean hasSelfLink = result.getLinks().stream()
-                .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink,"O link 'self' não foi encontrado ou está incorreto");
-
-        boolean hasDeleteLink = result.getLinks().stream()
-                .anyMatch(link -> "delete".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "DELETE".equals(link.getType()));
-        assertTrue(hasDeleteLink,"O link 'delete' não foi encontrado ou está incorreto");
-
-        boolean hasCreateLink = result.getLinks().stream()
-                .anyMatch(link -> "create".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "POST".equals(link.getType()));
-        assertTrue(hasCreateLink,"O link 'create' não foi encontrado ou está incorreto");
-
-        boolean hasUpdateLink = result.getLinks().stream()
-                .anyMatch(link -> "update".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/1")
-                        && "PUT".equals(link.getType()));
-        assertTrue(hasUpdateLink, "O link 'update' não foi encontrado ou está incorreto");
-
-        boolean hasFindAllLink = result.getLinks().stream()
-                .anyMatch(link -> "findAll".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses")
-                        && "GET".equals(link.getType()));
-        assertTrue(hasFindAllLink, "O link 'findAll' não foi encontrado ou está incorreto");
-
-
-        assertEquals("street test1", result.getStreet());
-        assertEquals("city test1", result.getCity());
-        assertEquals("state test1", result.getState());
-        assertEquals("zipcode test1", result.getZipCode());
-        assertEquals("country test1", result.getCountry());
-        assertEquals("complement test1", result.getComplement());
-        assertEquals("100", result.getNumber());
+        assertHasHateoasLinks(result);
+        assertEqualsData(result);
 
         verify(repository).save(entity);
         verify(mapper).toDTO(entity);
@@ -262,53 +151,73 @@ class AddressServiceTest {
         assertNotNull(result);
         assertEquals(20, result.size());
 
-        var addressDTO1 = result.get(1);
+        var address1 = result.get(1);
 
-        assertNotNull(addressDTO1);
-        assertNotNull(addressDTO1.getLinks());
+        assertNotNull(address1);
+        assertNotNull(address1.getLinks());
+        assertHasHateoasLinks(address1);
+        assertEqualsData(address1);
 
-        Long expectedId1 = addressDTO1.getId();
-        assertNotNull(expectedId1, "ID do DTO não deveria ser nulo");
+        var address10 = result.get(10);
 
-        boolean hasSelfLink1 = addressDTO1.getLinks().stream()
-                .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/" + expectedId1)
-                        && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink1, "Link self ausente ou incorreto para o item da lista");
+        assertNotNull(address10);
+        assertNotNull(address10.getLinks());
+        assertHasHateoasLinks(address10);
+        assertEqualsData(address10);
 
-        assertEquals("street test1", addressDTO1.getStreet());
-        assertEquals("city test1", addressDTO1.getCity());
-        assertEquals("state test1", addressDTO1.getState());
-        assertEquals("zipcode test1", addressDTO1.getZipCode());
-        assertEquals("country test1", addressDTO1.getCountry());
-        assertEquals("complement test1", addressDTO1.getComplement());
-        assertEquals("100", addressDTO1.getNumber());
+        var address19 = result.get(19);
 
-        var addressDTO19 = result.get(19);
-
-        assertNotNull(addressDTO19);
-        assertNotNull(addressDTO19.getLinks());
-
-        Long expectedId219 = addressDTO19.getId();
-        assertNotNull(expectedId219, "ID do DTO não deveria ser nulo");
-
-        boolean hasSelfLink19 = addressDTO19.getLinks().stream()
-                .anyMatch(link -> "self".equals(link.getRel().value())
-                        && link.getHref().endsWith("/addresses/" + expectedId219)
-                        && "GET".equals(link.getType()));
-        assertTrue(hasSelfLink19, "Link self ausente ou incorreto para o item da lista");
-
-        assertEquals("street test19", addressDTO19.getStreet());
-        assertEquals("city test19", addressDTO19.getCity());
-        assertEquals("state test19", addressDTO19.getState());
-        assertEquals("zipcode test19", addressDTO19.getZipCode());
-        assertEquals("country test19", addressDTO19.getCountry());
-        assertEquals("complement test19", addressDTO19.getComplement());
-        assertEquals("1900", addressDTO19.getNumber());
+        assertNotNull(address19);
+        assertNotNull(address19.getLinks());
+       assertHasHateoasLinks(address19);
+       assertEqualsData(address19);
 
         verify(repository).findAll();
         verify(mapper).toDtoList(addresses);
         verifyNoMoreInteractions(repository, mapper);
 
+    }
+
+    private void assertHasHateoasLinks(AddressDTO result) {
+        Long expectedId = result.getId();
+        boolean hasSelfLink = result.getLinks().stream()
+                .anyMatch(link -> "self".equals(link.getRel().value())
+                        && link.getHref().endsWith("/addresses/" + expectedId)
+                        && "GET".equals(link.getType()));
+        assertTrue(hasSelfLink,"O link 'self' não foi encontrado ou está incorreto");
+
+        boolean hasDeleteLink = result.getLinks().stream()
+                .anyMatch(link -> "delete".equals(link.getRel().value())
+                        && link.getHref().endsWith("/addresses/"+ expectedId)
+                        && "DELETE".equals(link.getType()));
+        assertTrue(hasDeleteLink,"O link 'delete' não foi encontrado ou está incorreto");
+
+        boolean hasCreateLink = result.getLinks().stream()
+                .anyMatch(link -> "create".equals(link.getRel().value())
+                        && link.getHref().endsWith("/addresses")
+                        && "POST".equals(link.getType()));
+        assertTrue(hasCreateLink,"O link 'create' não foi encontrado ou está incorreto");
+
+        boolean hasUpdateLink = result.getLinks().stream()
+                .anyMatch(link -> "update".equals(link.getRel().value())
+                        && link.getHref().endsWith("/addresses/" + expectedId)
+                        && "PUT".equals(link.getType()));
+        assertTrue(hasUpdateLink, "O link 'update' não foi encontrado ou está incorreto");
+
+        boolean hasFindAllLink = result.getLinks().stream()
+                .anyMatch(link -> "findAll".equals(link.getRel().value())
+                        && link.getHref().endsWith("/addresses")
+                        && "GET".equals(link.getType()));
+        assertTrue(hasFindAllLink, "O link 'findAll' não foi encontrado ou está incorreto");
+    }
+    private void assertEqualsData(AddressDTO dto){
+        Long expectedValue = dto.getId();
+        assertEquals("street test" + expectedValue, dto.getStreet());
+        assertEquals("city test" + expectedValue, dto.getCity());
+        assertEquals("state test" + expectedValue, dto.getState());
+        assertEquals("zipcode test" + expectedValue, dto.getZipCode());
+        assertEquals("country test" + expectedValue, dto.getCountry());
+        assertEquals("complement test" + expectedValue, dto.getComplement());
+        assertEquals(expectedValue + "00", dto.getNumber());
     }
 }
