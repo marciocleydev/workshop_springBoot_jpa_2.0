@@ -1,10 +1,11 @@
-package com.myProject.SpringSalesApp.services;
+package com.myProject.SpringSalesApp.unittests.services;
 
 import com.myProject.SpringSalesApp.DTO.AddressDTO;
 import com.myProject.SpringSalesApp.entities.Address;
 import com.myProject.SpringSalesApp.mapper.AddressMapper;
-import com.myProject.SpringSalesApp.mocks.MockAddress;
+import com.myProject.SpringSalesApp.unittests.mocks.MockAddress;
 import com.myProject.SpringSalesApp.repositories.AddressRepository;
+import com.myProject.SpringSalesApp.services.AddressService;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;

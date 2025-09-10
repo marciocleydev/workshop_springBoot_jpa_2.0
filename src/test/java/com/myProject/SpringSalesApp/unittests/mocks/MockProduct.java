@@ -1,4 +1,4 @@
-package com.myProject.SpringSalesApp.mocks;
+package com.myProject.SpringSalesApp.unittests.mocks;
 
 import com.myProject.SpringSalesApp.DTO.ProductDTO;
 import com.myProject.SpringSalesApp.entities.Product;

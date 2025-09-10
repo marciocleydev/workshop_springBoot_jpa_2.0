@@ -17,10 +17,11 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
         private String name;
     @JsonProperty("Description")
         private String description;
-    @JsonProperty("Preço")
+      @JsonProperty("Preço")
         private Double price;
-    @JsonIgnore
+    @JsonProperty("imgUrl")
         private String imgUrl;
+        private boolean enabled;
     /*
     @JsonFormat(pattern = "dd/MM/yyyy")
         private LocalDate factDate;
@@ -75,5 +76,11 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
 
         public void setImgUrl(String imgUrl) {
             this.imgUrl = imgUrl;
+        }
+        public boolean getEnabled() {
+            return enabled;
+        }
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
         }
 }

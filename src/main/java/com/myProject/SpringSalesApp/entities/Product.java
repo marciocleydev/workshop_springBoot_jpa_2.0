@@ -21,6 +21,8 @@ public class Product implements Serializable {
     private String description;
     private Double price;
     private String imgUrl;
+    @Column(nullable = false)
+    private boolean enabled;
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "tb_category_product",joinColumns = @JoinColumn(name = "id_product"),inverseJoinColumns = @JoinColumn(name = "id_category"))
@@ -77,6 +79,14 @@ public class Product implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Set<Category> getCategories() {

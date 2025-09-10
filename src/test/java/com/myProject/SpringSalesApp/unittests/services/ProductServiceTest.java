@@ -1,10 +1,11 @@
-package com.myProject.SpringSalesApp.services;
+package com.myProject.SpringSalesApp.unittests.services;
 
 import com.myProject.SpringSalesApp.DTO.ProductDTO;
 import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.mapper.ProductMapper;
-import com.myProject.SpringSalesApp.mocks.MockProduct;
+import com.myProject.SpringSalesApp.unittests.mocks.MockProduct;
 import com.myProject.SpringSalesApp.repositories.ProductRepository;
+import com.myProject.SpringSalesApp.services.ProductService;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;

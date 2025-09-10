@@ -1,4 +1,4 @@
-package com.myProject.SpringSalesApp.mocks;
+package com.myProject.SpringSalesApp.unittests.mocks;
 
 import com.myProject.SpringSalesApp.DTO.AddressDTO;
 import com.myProject.SpringSalesApp.entities.Address;
