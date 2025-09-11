@@ -22,7 +22,7 @@ public class Product implements Serializable {
     private Double price;
     private String imgUrl;
     @Column(nullable = false)
-    private boolean enabled;
+    private boolean enabled = true;
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "tb_category_product",joinColumns = @JoinColumn(name = "id_product"),inverseJoinColumns = @JoinColumn(name = "id_category"))

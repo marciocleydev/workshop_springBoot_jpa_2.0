@@ -1,4 +1,4 @@
-package com.myProject.SpringSalesApp.integrationtests.controllers.withJson;
+package com.myProject.SpringSalesApp.integrationtests.controllers.cors.withJson;
 
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)// JUnit faz os testes aleatoriamente, essa anotação diz para ele seguir uma ordem que será definida
-class ProductControllerTest extends AbstractIntagrationTest {
+class ProductControllerCorsJsonTest extends AbstractIntagrationTest {
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
     private static ProductDTO productDTO;
@@ -54,6 +54,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(productDTO)
                 .when()
                 .post()
@@ -84,6 +85,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("id", productDTO.getId())
                 .when()
                 .get("/{id}")
@@ -117,6 +119,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("id", productDTO.getId())
                 .body(productDTO)
                 .when()
@@ -148,9 +151,10 @@ class ProductControllerTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("id", productDTO.getId())
                 .when()
-                .delete("{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(expectedStatus)
                 .extract()
@@ -177,6 +181,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .get()
                 .then()
@@ -204,6 +209,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
         productDTO.setDescription("Notebook de " + n + "0 polegadas");
         productDTO.setPrice(n * 1000.00);
         productDTO.setImgUrl("https://img.com/notebook" + n +".png");
+        productDTO.setEnabled(true);
     }
     private void setSpecification(String origin){
         specification = new RequestSpecBuilder()
@@ -227,6 +233,7 @@ class ProductControllerTest extends AbstractIntagrationTest {
         assertNotNull(productDTO.getPrice());
         assertNotNull(productDTO.getImgUrl());
         assertTrue(productDTO.getId() > 0);
+        assertTrue(productDTO.getEnabled());
     }
 
 }

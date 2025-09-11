@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "6d4b5bce-fb1e-417b-8509-130ab2240fbc",
+		"_postman_id": "78b5e9f0-e777-4bc0-ad6d-0da5373b803d",
 		"name": "Spring_sales_app",
 		"description": "REST API's RESTfull from 0 with java, Spring Boot, Kubernetes and Docker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "47364967",
-		"_collection_link": "https://marciocleydev-8280056.postman.co/workspace/marcioDev's-Workspace~5487d0b7-0963-4a19-88a1-c6b11b874e8c/collection/47364967-6d4b5bce-fb1e-417b-8509-130ab2240fbc?action=share&source=collection_link&creator=47364967"
+		"_collection_link": "https://marciocleydev-8280056.postman.co/workspace/marcioDev's-Workspace~5487d0b7-0963-4a19-88a1-c6b11b874e8c/collection/47364967-78b5e9f0-e777-4bc0-ad6d-0da5373b803d?action=share&source=collection_link&creator=47364967"
 	},
 	"item": [
 		{
@@ -1394,20 +1394,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/products/:id",
+							"raw": "{{baseUrl}}/products/",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"products",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "6349",
-									"description": "(Required) "
-								}
+								""
 							]
 						},
 						"description": "delete a specific product by ID"

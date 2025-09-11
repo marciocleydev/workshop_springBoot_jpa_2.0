@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepository extends JpaRepository<Product,Long> { //long é o tipo da chave da entidade
 
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Product p SET p.enabled = false WHERE p.id = :id")
     void disableProduct(@Param("id") Long id);
 }

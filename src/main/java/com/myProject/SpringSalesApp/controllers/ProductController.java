@@ -5,6 +5,7 @@ import com.myProject.SpringSalesApp.controllers.docs.ProductControllerDocs;
 import com.myProject.SpringSalesApp.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,21 +21,36 @@ public class ProductController implements ProductControllerDocs {
     @Autowired
     private ProductService service;
 
-    @GetMapping
+    @GetMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE}
+            )
     @Override
     public ResponseEntity<List<ProductDTO>> findAll(){
         List<ProductDTO> products = service.findAll();
         return ResponseEntity.ok().body(products);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
     @Override
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
         ProductDTO product = service.findById(id);
         return ResponseEntity.ok().body(product);
     }
 
-    @PostMapping
+    @PostMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE},
+            consumes ={MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE}
+    )
     @Override
     public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product){
         ProductDTO product1 = service.insert(product);
@@ -42,10 +58,27 @@ public class ProductController implements ProductControllerDocs {
         return ResponseEntity.created(uri).body(product1);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE},
+            consumes ={MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE}
+    )
     @Override
     public ResponseEntity<ProductDTO> updateById(@RequestBody ProductDTO product, @PathVariable Long id){
         ProductDTO product1 = service.updateById(product,id);
+        return ResponseEntity.ok().body(product1);
+    }
+    @PatchMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<ProductDTO> disableProduct(@PathVariable Long id){
+        ProductDTO product1 = service.disableProduct(id);
         return ResponseEntity.ok().body(product1);
     }
 

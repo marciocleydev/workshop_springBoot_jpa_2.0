@@ -3,10 +3,13 @@ package com.myProject.SpringSalesApp.integrationtests.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@JacksonXmlRootElement(localName = "Product")
 @JsonPropertyOrder({"id", "name", "price", "description", "imgUrl"})
 public class ProductDTO implements Serializable {
     @Serial

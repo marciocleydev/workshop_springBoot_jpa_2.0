@@ -8,6 +8,7 @@ import com.myProject.SpringSalesApp.repositories.ProductRepository;
 import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,11 +78,22 @@ public class ProductService {
             throw new DataIntegrityException(e.getMessage());
         }
     }
+    @Transactional // como eu mesmo que criei essa operaçao no repositorio preciso informar @Transactional, pois essa operação precisa obedecer o ACID
+    public ProductDTO disableProduct(Long id) {
+        logger.info("Disabling one product!");
+            repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            repository.disableProduct(id);
+            var product = repository.findById(id).get();
+            var productDTO = productMapper.toDTO(product);
+            addHateoasLinks(productDTO);
+            return productDTO;
+    }
     private void addHateoasLinks(ProductDTO dto) {
         dto.add(linkTo(methodOn(ProductController.class).findById(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(ProductController.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
         dto.add(linkTo(methodOn(ProductController.class).findAll()).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(ProductController.class).insert(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(ProductController.class).updateById(dto,dto.getId())).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(ProductController.class).disableProduct(dto.getId())).withRel("disabe").withType("PATCH"));
     }
 }

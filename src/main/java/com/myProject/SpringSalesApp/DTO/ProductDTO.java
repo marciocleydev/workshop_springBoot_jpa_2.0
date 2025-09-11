@@ -8,7 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 import java.io.Serial;
 import java.io.Serializable;
 
-@JsonPropertyOrder({"id","name","price","description","imgUrl"})
+@JsonPropertyOrder({"id","name","price","description","imgUrl","enabled"})
 public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,6 +21,7 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
         private Double price;
     @JsonProperty("imgUrl")
         private String imgUrl;
+    @JsonProperty("enabled")
         private boolean enabled;
     /*
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -30,12 +31,13 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
         public ProductDTO(){
         }
 
-        public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+        public ProductDTO(Long id, String name, String description, Double price, String imgUrl, boolean enabled) {
             this.id = id;
             this.name = name;
             this.description = description;
             this.price = price;
             this.imgUrl = imgUrl;
+            this.enabled = enabled;
         }
 
         public Long getId() {
