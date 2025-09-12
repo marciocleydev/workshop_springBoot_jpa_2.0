@@ -193,7 +193,7 @@ class ProductControllerCorsXmlTest extends AbstractIntagrationTest {
                 .asString();
 
         if(expectedStatus == 200) {
-            List<ProductDTO> products = objectMapper.readValue(content, new TypeReference<List<ProductDTO>>() {});
+            List<ProductDTO> products = objectMapper.readValue(content, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductDTO.class));
             productDTO = products.getFirst();
             verifyAssertNull();
             assertEquals("The Lord of the Rings", productDTO.getName());
