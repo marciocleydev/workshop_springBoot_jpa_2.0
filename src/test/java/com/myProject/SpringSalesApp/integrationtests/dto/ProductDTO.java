@@ -4,25 +4,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@JacksonXmlRootElement(localName = "Product")
-@JsonPropertyOrder({"id", "name", "price", "description", "imgUrl"})
+@XmlRootElement
+@JsonPropertyOrder({"id", "name", "description", "price", "imgUrl"})
 public class ProductDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private Long id;
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
-    @JsonProperty("Description")
+    @JsonProperty("description")
     private String description;
-    @JsonProperty("Preço")
+    @JsonProperty("price")
     private Double price;
     @JsonProperty("imgUrl")
     private String imgUrl;
+    @JsonProperty("enabled")
     private boolean enabled;
 
     public ProductDTO() {

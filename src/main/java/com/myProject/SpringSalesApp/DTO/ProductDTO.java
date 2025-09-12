@@ -13,11 +13,11 @@ public class ProductDTO extends RepresentationModel<ProductDTO> implements Seria
     @Serial
     private static final long serialVersionUID = 1L;
         private Long id;
-        @JsonProperty("Name")
+        @JsonProperty("name")
         private String name;
-    @JsonProperty("Description")
+    @JsonProperty("description")
         private String description;
-      @JsonProperty("Preço")
+      @JsonProperty("price")
         private Double price;
     @JsonProperty("imgUrl")
         private String imgUrl;
