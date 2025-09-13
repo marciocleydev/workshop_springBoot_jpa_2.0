@@ -1,3 +1,4 @@
+/*
 package com.myProject.SpringSalesApp.config;
 
 import com.myProject.SpringSalesApp.entities.*;
@@ -76,3 +77,4 @@ public class DevConfig implements CommandLineRunner {
 
     }
 }
+*/

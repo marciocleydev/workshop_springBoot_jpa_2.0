@@ -11,7 +11,7 @@ spring:
     password: 81050050
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none #depois das migrations
 
     properties:
       hibernete:

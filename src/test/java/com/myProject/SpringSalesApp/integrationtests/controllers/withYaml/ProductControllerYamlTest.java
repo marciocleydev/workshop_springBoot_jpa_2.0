@@ -1,6 +1,5 @@
 package com.myProject.SpringSalesApp.integrationtests.controllers.withYaml;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.controllers.withYaml.mapper.YAMLMapper;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
