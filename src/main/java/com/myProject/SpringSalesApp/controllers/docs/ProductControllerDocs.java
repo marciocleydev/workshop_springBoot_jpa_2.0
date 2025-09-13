@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
@@ -37,6 +38,33 @@ public interface ProductControllerDocs {
             })
 
     ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findAll(
+            @RequestParam(value = "page",defaultValue = "0")Integer page, //numero da pagina
+            @RequestParam(value = "size",defaultValue = "12")Integer size, //quantidade de registros por pagina
+            @RequestParam(value = "direction",defaultValue = "asc")String direction //ordenacao
+    );
+
+    @Operation(summary = "Find products by name",
+            description = "Returns pages of products by name",
+            tags = {"Product"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class))
+                                    )
+                            }),
+                    @ApiResponse(description = "No content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            })
+
+    ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findProductByName(
+            @PathVariable(value = "name")String name,
             @RequestParam(value = "page",defaultValue = "0")Integer page, //numero da pagina
             @RequestParam(value = "size",defaultValue = "12")Integer size, //quantidade de registros por pagina
             @RequestParam(value = "direction",defaultValue = "asc")String direction //ordenacao

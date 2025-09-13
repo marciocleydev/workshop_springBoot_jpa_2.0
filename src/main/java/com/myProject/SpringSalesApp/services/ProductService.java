@@ -31,6 +31,7 @@ public class ProductService {
     ProductRepository repository;
     @Autowired
     ProductMapper productMapper;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     PagedResourcesAssembler<ProductDTO> assembler;
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -39,6 +40,26 @@ public class ProductService {
         logger.info("Finding all Products!");
 
         var products = repository.findAll(pageable);
+        var productsWithLinks = products.map(
+                product -> {
+                    var dto = productMapper.toDTO(product);
+                    addHateoasLinks(dto);
+                    return dto;
+                });
+        //adiciona link hateoas a página
+        Link findAllLInk = WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(ProductController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        pageable.getSort().toString()))
+                .withSelfRel();
+        return assembler.toModel(productsWithLinks,findAllLInk);
+    }
+    public PagedModel<EntityModel<ProductDTO>> findProductByName(String name, Pageable pageable) {
+        logger.info("Finding Products by name!");
+
+        var products = repository.findProductByName(name, pageable);
         var productsWithLinks = products.map(
                 product -> {
                     var dto = productMapper.toDTO(product);
