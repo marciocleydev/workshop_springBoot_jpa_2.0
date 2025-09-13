@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@Relation(collectionRelation = "products")
 @JsonPropertyOrder({"id","name","price","description","imgUrl","enabled"})
 public class ProductDTO extends RepresentationModel<ProductDTO> implements Serializable {
     @Serial

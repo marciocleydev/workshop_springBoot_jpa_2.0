@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +36,11 @@ public interface ProductControllerDocs {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             })
 
-    ResponseEntity<List<ProductDTO>> findAll();
+    ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findAll(
+            @RequestParam(value = "page",defaultValue = "0")Integer page, //numero da pagina
+            @RequestParam(value = "size",defaultValue = "12")Integer size, //quantidade de registros por pagina
+            @RequestParam(value = "direction",defaultValue = "asc")String direction //ordenacao
+    );
 
     @Operation(summary = "Find a product",
             description = "Returns a specific product by ID",

@@ -5,6 +5,13 @@ import com.myProject.SpringSalesApp.controllers.docs.ProductControllerDocs;
 import com.myProject.SpringSalesApp.services.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +34,14 @@ public class ProductController implements ProductControllerDocs {
                 MediaType.APPLICATION_YAML_VALUE}
             )
     @Override
-    public ResponseEntity<List<ProductDTO>> findAll(){
-        List<ProductDTO> products = service.findAll();
+    public  ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findAll(
+            @RequestParam(value = "page",defaultValue = "0")Integer page, //numero da pagina
+            @RequestParam(value = "size",defaultValue = "12")Integer size, //quantidade de registros por pagina
+            @RequestParam(value = "direction",defaultValue = "asc")String direction //quantidade de registros por pagina
+    ){
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC: Direction.ASC;
+        Pageable pageable = PageRequest.of(page,size,Sort.by(sortDirection,"name"));
+        var products =  service.findAll(pageable);
         return ResponseEntity.ok().body(products);
     }
 
