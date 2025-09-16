@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
+import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.json.WrapperProductDTO;
 import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.xml_yaml.PageModelProduct;
 import com.myProject.SpringSalesApp.integrationtests.testcontainers.AbstractIntagrationTest;
 import io.restassured.builder.RequestSpecBuilder;
@@ -169,6 +170,39 @@ class ProductControllerXmlTest extends AbstractIntagrationTest {
         assertEquals(1.5, product5.getPrice());
         assertEquals("http://dummyimage.com/128x100.png/cc0000/ffffff", product5.getImgUrl());
         assertTrue(product5.getEnabled());
+    }
+    @Order(7)
+    @Test
+    void findProductByName() throws IOException {
+        //{{baseUrl}}/products/findByName/set?page=4&size=2&direction=asc
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .pathParam("name", "set") // name: nome do parametro que vai ser passado na url, set = valor do parametro.
+                .queryParams("page", 2, "size", 4, "direction","asc")
+                .when()
+                .get("findByName/{name}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        PageModelProduct wrapper = objectMapper.readValue(content, PageModelProduct.class);
+        List<ProductDTO> products = wrapper.content;
+
+        var product1 = products.get(0);
+        assertEquals("Coconut Bowls Set", product1.getName());
+        assertEquals("Handmade eco-friendly bowls made from real coconuts.", product1.getDescription());
+        assertEquals(22.99, product1.getPrice());
+        assertEquals("http://dummyimage.com/134x100.png/ff4444/ffffff", product1.getImgUrl());
+        assertFalse(product1.getEnabled());
+
+        var product4 = products.get(3);
+        assertEquals("Fashionable Scarves Set", product4.getName());
+        assertEquals( "Stylish scarves to accessorize any outfit.", product4.getDescription());
+        assertEquals(24.99, product4.getPrice());
+        assertEquals("http://dummyimage.com/225x100.png/ff4444/ffffff", product4.getImgUrl());
+        assertFalse(product4.getEnabled());
     }
 
     private void mockProduct(Integer n) {
