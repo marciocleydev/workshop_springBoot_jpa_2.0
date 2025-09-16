@@ -1,5 +1,5 @@
 spring:
   profiles:
-    active: dev
+    active: test
   jpa:
    open-in-view: true

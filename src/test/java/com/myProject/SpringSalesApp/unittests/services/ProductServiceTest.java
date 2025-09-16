@@ -66,7 +66,7 @@ class ProductServiceTest {
 
         boolean hasFindAllLink = result.getLinks().stream()
                 .anyMatch(link -> "findAll".equals(link.getRel().value())
-                        && link.getHref().endsWith("/products")
+                        && link.getHref().endsWith("/products?page=1&size=12&direction=asc")
                         && "GET".equals(link.getType()));
 
         assertTrue(hasFindAllLink, "O link 'findAll' não foi encontrado ou está incorreto");

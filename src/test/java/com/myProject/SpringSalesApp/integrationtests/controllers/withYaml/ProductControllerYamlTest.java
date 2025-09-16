@@ -3,6 +3,7 @@ package com.myProject.SpringSalesApp.integrationtests.controllers.withYaml;
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.controllers.withYaml.mapper.YAMLMapper;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
+import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.xml_yaml.PageModelProduct;
 import com.myProject.SpringSalesApp.integrationtests.testcontainers.AbstractIntagrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -179,6 +179,7 @@ class ProductControllerYamlTest extends AbstractIntagrationTest {
                 )
                 .spec(specification)
                 .accept(MediaType.APPLICATION_YAML_VALUE)
+                .queryParams("page", 3, "size", 12, "direction","asc")
                 .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .when()
                 .get()
@@ -186,22 +187,23 @@ class ProductControllerYamlTest extends AbstractIntagrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(ProductDTO[].class, objectMapper);
+                .as(PageModelProduct.class, objectMapper);
 
-        List<ProductDTO> products = Arrays.asList(response);
-                productDTO = products.get(0);
-        verifyAssertNull();
-        assertEquals("The Lord of the Rings", productDTO.getName());
-        assertEquals("Lorem ipsum dolor sit amet, consectetur.", productDTO.getDescription());
-        assertEquals(90.5, productDTO.getPrice());
-        assertEquals("", productDTO.getImgUrl());
+        List<ProductDTO> products =response.content;
+        var product1 = products.get(0);
 
-        productDTO = products.get(4);
-        verifyAssertNull();
-        assertEquals("Rails for Dummies", productDTO.getName());
-        assertEquals("Cras fringilla convallis sem vel faucibus.", productDTO.getDescription());
-        assertEquals(100.99, productDTO.getPrice());
-        assertEquals("", productDTO.getImgUrl());
+        assertEquals("Asian Stir-Fry Vegetables", product1.getName());
+        assertEquals("Frozen mix of colorful stir-fry veggies.", product1.getDescription());
+        assertEquals(2.99, product1.getPrice());
+        assertEquals("http://dummyimage.com/165x100.png/ff4444/ffffff", product1.getImgUrl());
+        assertFalse(product1.getEnabled());
+
+        var product5 = products.get(4);
+        assertEquals("Avocados", product5.getName());
+        assertEquals("Fresh, creamy avocados ideal for salads and guacamole.", product5.getDescription());
+        assertEquals(1.5, product5.getPrice());
+        assertEquals("http://dummyimage.com/128x100.png/cc0000/ffffff", product5.getImgUrl());
+        assertTrue(product5.getEnabled());
     }
 
     private void mockProduct(Integer n) {

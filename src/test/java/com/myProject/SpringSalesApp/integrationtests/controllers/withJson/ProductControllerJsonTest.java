@@ -2,6 +2,7 @@ package com.myProject.SpringSalesApp.integrationtests.controllers.withJson;
 
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
+import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.json.WrapperProductDTO;
 import com.myProject.SpringSalesApp.integrationtests.testcontainers.AbstractIntagrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductControllerJsonTest extends AbstractIntagrationTest {
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
-    private static ProductDTO product4;
+    private static ProductDTO product1;
 
 
     @BeforeAll
@@ -35,7 +36,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
         objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);// nao da falha quando o Json não trás links HATEOAS.
 
-        product4 = new ProductDTO();
+        product1 = new ProductDTO();
     }
 
     @Order(1)
@@ -46,7 +47,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(product4)
+                .body(product1)
                 .when()
                 .post()
                 .then()
@@ -55,7 +56,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
                 .body()
                 .asString();
 
-        product4 = objectMapper.readValue(content, ProductDTO.class);
+        product1 = objectMapper.readValue(content, ProductDTO.class);
         verifyAssertNull();
         verifyAssertEquals(1);
     }
@@ -65,7 +66,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
     void findById() throws IOException {
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("id", product4.getId())
+                .pathParam("id", product1.getId())
                 .when()
                 .get("/{id}")
                 .then()
@@ -74,7 +75,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
                 .body()
                 .asString();
 
-        product4 = objectMapper.readValue(content, ProductDTO.class);
+        product1 = objectMapper.readValue(content, ProductDTO.class);
         verifyAssertNull();
         verifyAssertEquals(1);
     }
@@ -86,8 +87,8 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("id", product4.getId())
-                .body(product4)
+                .pathParam("id", product1.getId())
+                .body(product1)
                 .when()
                 .put("/{id}")
                 .then()
@@ -96,7 +97,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
                 .body()
                 .asString();
 
-        product4 = objectMapper.readValue(content, ProductDTO.class);
+        product1 = objectMapper.readValue(content, ProductDTO.class);
         verifyAssertNull();
         verifyAssertEquals(2);
     }
@@ -106,7 +107,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
     void disableProduct() throws IOException {
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("id", product4.getId())
+                .pathParam("id", product1.getId())
                 .when()
                 .patch("/{id}")
                 .then()
@@ -115,10 +116,10 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
                 .body()
                 .asString();
 
-        product4 = objectMapper.readValue(content, ProductDTO.class);
-        assertFalse(product4.getEnabled());
+        product1 = objectMapper.readValue(content, ProductDTO.class);
+        assertFalse(product1.getEnabled());
 
-        product4.setEnabled(true);
+        product1.setEnabled(true);
         verifyAssertNull();
         verifyAssertEquals(2);
     }
@@ -128,7 +129,7 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
     void deleteById() {
         given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .pathParam("id", product4.getId())
+                .pathParam("id", product1.getId())
                 .when()
                 .delete("/{id}")
                 .then()
@@ -138,8 +139,10 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
     @Order(6)
     @Test
     void findAll() throws IOException {
+
         var content = given(specification)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams("page", 3, "size", 12, "direction","asc")
                 .when()
                 .get()
                 .then()
@@ -148,28 +151,30 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
                 .body()
                 .asString();
 
-        List<ProductDTO> products = objectMapper.readValue(content, objectMapper.getTypeFactory().constructCollectionType(List.class, ProductDTO.class));
-        product4 = products.get(0);
-        verifyAssertNull();
-        assertEquals("The Lord of the Rings", product4.getName());
-        assertEquals("Lorem ipsum dolor sit amet, consectetur.", product4.getDescription());
-        assertEquals(90.5, product4.getPrice());
-        assertEquals("", product4.getImgUrl());
+        WrapperProductDTO wrapper= objectMapper.readValue(content, WrapperProductDTO.class);
+        List<ProductDTO> products = wrapper.getEmbedded().getProducts();
 
-        product4 = products.get(4);
-        verifyAssertNull();
-        assertEquals("Rails for Dummies", product4.getName());
-        assertEquals("Cras fringilla convallis sem vel faucibus.", product4.getDescription());
-        assertEquals(100.99, product4.getPrice());
-        assertEquals("", product4.getImgUrl());
+        var product1 = products.get(0);
+        assertEquals("Asian Stir-Fry Vegetables", product1.getName());
+        assertEquals("Frozen mix of colorful stir-fry veggies.", product1.getDescription());
+        assertEquals(2.99, product1.getPrice());
+        assertEquals("http://dummyimage.com/165x100.png/ff4444/ffffff", product1.getImgUrl());
+        assertFalse(product1.getEnabled());
+
+        var product5 = products.get(4);
+        assertEquals("Avocados", product5.getName());
+        assertEquals("Fresh, creamy avocados ideal for salads and guacamole.", product5.getDescription());
+        assertEquals(1.5, product5.getPrice());
+        assertEquals("http://dummyimage.com/128x100.png/cc0000/ffffff", product5.getImgUrl());
+        assertTrue(product5.getEnabled());
     }
 
     private void mockProduct(Integer n) {
-        product4.setName("Notebook " + n);
-        product4.setDescription("Notebook de " + n + "0 polegadas");
-        product4.setPrice(n * 1000.00);
-        product4.setImgUrl("https://img.com/notebook" + n + ".png");
-        product4.setEnabled(true);
+        product1.setName("Notebook " + n);
+        product1.setDescription("Notebook de " + n + "0 polegadas");
+        product1.setPrice(n * 1000.00);
+        product1.setImgUrl("https://img.com/notebook" + n + ".png");
+        product1.setEnabled(true);
     }
 
     private void setSpecification() {
@@ -183,20 +188,20 @@ class ProductControllerJsonTest extends AbstractIntagrationTest {
     }
 
     private void verifyAssertEquals(Integer n) {
-        assertEquals("Notebook " + n, product4.getName());
-        assertEquals("Notebook de " + n + "0 polegadas", product4.getDescription());
-        assertEquals(n * 1000.00, product4.getPrice());
-        assertEquals("https://img.com/notebook" + n + ".png", product4.getImgUrl());
+        assertEquals("Notebook " + n, product1.getName());
+        assertEquals("Notebook de " + n + "0 polegadas", product1.getDescription());
+        assertEquals(n * 1000.00, product1.getPrice());
+        assertEquals("https://img.com/notebook" + n + ".png", product1.getImgUrl());
     }
 
     private void verifyAssertNull() {
-        assertNotNull(product4.getId());
-        assertNotNull(product4.getName());
-        assertNotNull(product4.getDescription());
-        assertNotNull(product4.getPrice());
-        assertNotNull(product4.getImgUrl());
-        assertTrue(product4.getId() > 0);
-        assertTrue(product4.getEnabled());
+        assertNotNull(product1.getId());
+        assertNotNull(product1.getName());
+        assertNotNull(product1.getDescription());
+        assertNotNull(product1.getPrice());
+        assertNotNull(product1.getImgUrl());
+        assertTrue(product1.getId() > 0);
+        assertTrue(product1.getEnabled());
     }
 
 }

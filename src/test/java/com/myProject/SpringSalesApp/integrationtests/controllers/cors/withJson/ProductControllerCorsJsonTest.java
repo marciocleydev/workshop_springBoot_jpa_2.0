@@ -2,6 +2,7 @@ package com.myProject.SpringSalesApp.integrationtests.controllers.cors.withJson;
 
 import com.myProject.SpringSalesApp.config.TestConfigs;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
+import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.json.WrapperProductDTO;
 import com.myProject.SpringSalesApp.integrationtests.testcontainers.AbstractIntagrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -13,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -181,6 +181,7 @@ class ProductControllerCorsJsonTest extends AbstractIntagrationTest {
 
         var content = given(specification)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParams("page", 3, "size", 12, "direction","asc")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .get()
@@ -191,13 +192,15 @@ class ProductControllerCorsJsonTest extends AbstractIntagrationTest {
                 .asString();
 
         if(expectedStatus == 200) {
-            List<ProductDTO> products = objectMapper.readValue(content, new TypeReference<List<ProductDTO>>() {});
-            productDTO = products.getFirst();
-            verifyAssertNull();
-            assertEquals("The Lord of the Rings", productDTO.getName());
-            assertEquals("Lorem ipsum dolor sit amet, consectetur.", productDTO.getDescription());
-            assertEquals(90.5, productDTO.getPrice());
-            assertEquals("", productDTO.getImgUrl());
+            WrapperProductDTO wrapper= objectMapper.readValue(content, WrapperProductDTO.class);
+            List<ProductDTO> products = wrapper.getEmbedded().getProducts();
+
+            var product1 = products.get(0);
+            assertEquals("Asian Stir-Fry Vegetables", product1.getName());
+            assertEquals("Frozen mix of colorful stir-fry veggies.", product1.getDescription());
+            assertEquals(2.99, product1.getPrice());
+            assertEquals("http://dummyimage.com/165x100.png/ff4444/ffffff", product1.getImgUrl());
+            assertFalse(product1.getEnabled());
         }
         else {
             assertEquals("Invalid CORS request", content);
