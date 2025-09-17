@@ -1,6 +1,8 @@
 
 cors:
   originPattern: http://localhost:8080,http://localhost:3000,https://www.linkedin.com/in/marciocleydev
+file:
+  upload-dir: /intellij/API_file_dir/upload
 spring:
   application:
     name: rest-spring-boot-and-java
@@ -17,6 +19,13 @@ spring:
       hibernete:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
+    open-in-view: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 logging:
   level:
     root: INFO #projeto completo.
