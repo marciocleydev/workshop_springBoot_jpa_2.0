@@ -15,6 +15,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -88,6 +89,18 @@ public class ProductController implements ProductControllerDocs {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product1.getId()).toUri();
         return ResponseEntity.created(uri).body(product1);
     }
+
+    @PostMapping( value = "/massCreation",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<List<ProductDTO>> massCreation( @RequestParam("file") MultipartFile file){
+        List<ProductDTO> product1 = service.massCreation(file);
+        return ResponseEntity.ok().body(product1);
+    }
+
 
     @PutMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE,
