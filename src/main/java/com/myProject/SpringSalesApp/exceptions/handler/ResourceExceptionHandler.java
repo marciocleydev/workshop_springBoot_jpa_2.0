@@ -1,10 +1,6 @@
-package com.myProject.SpringSalesApp.DTO.exceptions.handler;
+package com.myProject.SpringSalesApp.exceptions.handler;
 
-import com.myProject.SpringSalesApp.DTO.exceptions.StandardError;
-import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
-import com.myProject.SpringSalesApp.services.exceptions.FileNotFoundException;
-import com.myProject.SpringSalesApp.services.exceptions.FileStorageException;
-import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
+import com.myProject.SpringSalesApp.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +37,16 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<StandardError> FileNotFoundException(FileStorageException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> handlerFileNotFoundException(FileStorageException e, HttpServletRequest request){
         String error = "Data integrity violation";
         HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<StandardError> handlerBadRequestException(BadRequestException e, HttpServletRequest request){
+        String error = "Data integrity violation";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

@@ -1,9 +1,8 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.config.FileStorageConfig;
-import com.myProject.SpringSalesApp.controllers.FileController;
-import com.myProject.SpringSalesApp.services.exceptions.FileNotFoundException;
-import com.myProject.SpringSalesApp.services.exceptions.FileStorageException;
+import com.myProject.SpringSalesApp.exceptions.FileNotFoundException;
+import com.myProject.SpringSalesApp.exceptions.FileStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

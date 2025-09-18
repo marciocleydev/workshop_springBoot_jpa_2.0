@@ -1,11 +1,9 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.entities.Order;
-import com.myProject.SpringSalesApp.entities.Order;
 import com.myProject.SpringSalesApp.repositories.OrderRepository;
-import com.myProject.SpringSalesApp.repositories.OrderRepository;
-import com.myProject.SpringSalesApp.services.exceptions.DataIntegrityException;
-import com.myProject.SpringSalesApp.services.exceptions.ResourceNotFoundException;
+import com.myProject.SpringSalesApp.exceptions.DataIntegrityException;
+import com.myProject.SpringSalesApp.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
