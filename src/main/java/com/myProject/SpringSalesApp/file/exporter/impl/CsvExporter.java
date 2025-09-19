@@ -7,7 +7,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.apache.commons.csv.CSVFormat;
+
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ public class CsvExporter implements FileExporter {
         CSVFormat csvFormat = CSVFormat.Builder.create()
                 .setHeader("ID","Name", "Description", "Price", "ImgUrl", "Enabled" ) // todas as colunas
                 .setSkipHeaderRecord(false) // nao pode pular o header pq ele precisa ser definido
-                .;
+                .build();
 
         try(CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
             for (ProductDTO product : products) {

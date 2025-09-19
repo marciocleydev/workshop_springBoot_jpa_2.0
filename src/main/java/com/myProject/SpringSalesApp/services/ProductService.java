@@ -5,6 +5,9 @@ import com.myProject.SpringSalesApp.controllers.ProductController;
 import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.exceptions.BadRequestException;
 import com.myProject.SpringSalesApp.exceptions.FileStorageException;
+import com.myProject.SpringSalesApp.file.exporter.MediaTypes;
+import com.myProject.SpringSalesApp.file.exporter.contract.FileExporter;
+import com.myProject.SpringSalesApp.file.exporter.factory.FileExporterFactory;
 import com.myProject.SpringSalesApp.file.importer.contract.FileImporter;
 import com.myProject.SpringSalesApp.file.importer.factory.FileImporterFactory;
 import com.myProject.SpringSalesApp.mapper.ProductMapper;
@@ -16,6 +19,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -43,11 +47,17 @@ public class ProductService {
 
     @Autowired
     FileImporterFactory importer;
+
+    @Autowired
+    FileExporterFactory exporter;
+
     @Autowired
     ProductMapper productMapper;
+
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     PagedResourcesAssembler<ProductDTO> assembler;
+
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public PagedModel<EntityModel<ProductDTO>> findAll(Pageable pageable) {
@@ -55,6 +65,19 @@ public class ProductService {
 
         var products = repository.findAll(pageable);
         return buildPagedModel(pageable, products);
+    }
+    public Resource exportPage(Pageable pageable, String acceptHeader) {
+        logger.info("Exporting a product page!");
+
+        var products = repository.findAll(pageable)
+                .map(productMapper::toDTO).getContent();
+
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportFile(products);
+        } catch (Exception e) {
+            throw new RuntimeException("Error exporting products");
+        }
     }
 
     public PagedModel<EntityModel<ProductDTO>> findProductByName(String name, Pageable pageable) {
@@ -173,5 +196,6 @@ public class ProductService {
         dto.add(linkTo(methodOn(ProductController.class).insert(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(ProductController.class).updateById(dto, dto.getId())).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(ProductController.class).disableProduct(dto.getId())).withRel("disabe").withType("PATCH"));
+        dto.add(linkTo(methodOn(ProductController.class).exportPage(1, 12, "asc", null)).withRel("exportPage").withType("GET").withTitle("Export products"));
     }
 }
