@@ -132,6 +132,24 @@ public interface ProductControllerDocs {
 
     ResponseEntity<ProductDTO> findById(@PathVariable Long id);
 
+    @Operation(summary = "Export product data as PDF",
+            description = "Export a specific product data PDF by its ID",
+            tags = {"Product"},
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200",
+                            content = @Content(mediaType = MediaTypes.APPLICATION_PDF_VALUE)),
+
+                    @ApiResponse(description = "No content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            })
+
+    ResponseEntity<Resource> export(@PathVariable Long id, HttpServletRequest request);
+
     @Operation(summary = "create a product",
             description = "create a product by arguments from body",
             tags = {"Product"},

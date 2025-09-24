@@ -187,7 +187,7 @@ class ProductServiceTest {
         ProductDTO dto = input.mockDTO(1);
         dto.setId(1L);
 
-        when(repository.getReferenceById(1L)).thenReturn(entity);
+        when(repository.findById(1L)).thenReturn(Optional.of(entity));
         when(repository.save(entity)).thenReturn(entity);
         when(productMapper.toDTO(entity)).thenReturn(dto);
 
@@ -208,7 +208,7 @@ class ProductServiceTest {
         assertEquals(1.0, result.getPrice());
         assertEquals("descrição de test numero:1", result.getDescription());
 
-        verify(repository).getReferenceById(1L);
+        verify(repository).findById(1L);
         verify(repository).save(entity);
         verify(productMapper).toDTO(entity);
         verifyNoMoreInteractions(repository, productMapper);
@@ -219,11 +219,11 @@ class ProductServiceTest {
         ProductDTO dto = input.mockDTO(1);
         dto.setId(999L);
 
-        when(repository.getReferenceById(999L)).thenThrow(new jakarta.persistence.EntityNotFoundException());
+        when(repository.findById(999L)).thenThrow(new jakarta.persistence.EntityNotFoundException());
 
         assertThrows(ResourceNotFoundException.class, () -> service.updateById(dto, 999L));
 
-        verify(repository).getReferenceById(999L);
+        verify(repository).findById(999L);
         verifyNoMoreInteractions(repository, productMapper);
     }
 

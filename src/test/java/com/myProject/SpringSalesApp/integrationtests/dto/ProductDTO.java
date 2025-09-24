@@ -1,11 +1,15 @@
 package com.myProject.SpringSalesApp.integrationtests.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.myProject.SpringSalesApp.entities.Category;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @XmlRootElement
 @JsonPropertyOrder({"id", "name", "description", "price", "imgUrl"})
@@ -23,6 +27,8 @@ public class ProductDTO implements Serializable {
     private String imgUrl;
     @JsonProperty("enabled")
     private boolean enabled;
+    @JsonIgnore
+    private Set<Category> categories = new HashSet<>();
 
     public ProductDTO() {
     }
@@ -79,5 +85,12 @@ public class ProductDTO implements Serializable {
     }
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+    @JsonIgnore
+    public Set<Category> getCategories() {
+        return categories;
+    }
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

@@ -70,12 +70,12 @@ public class ProductController implements ProductControllerDocs {
         Resource file = service.exportPage(pageable, acceptHeader);
 
         Map<String, String> extensionsMap = Map.of(
-                MediaTypes.APPLICATION_XLSX_VALUE,".xlsx",
-                MediaTypes.APPLICATION_CSV_VALUE,".csv",
-                MediaTypes.APPLICATION_PDF_VALUE,".pdf"
+                MediaTypes.APPLICATION_XLSX_VALUE, ".xlsx",
+                MediaTypes.APPLICATION_CSV_VALUE, ".csv",
+                MediaTypes.APPLICATION_PDF_VALUE, ".pdf"
         );
 
-        var fileExtension = extensionsMap.getOrDefault(acceptHeader,"");
+        var fileExtension = extensionsMap.getOrDefault(acceptHeader, "");
         var contentType = acceptHeader != null ? acceptHeader : "application/octet-stream"; // tipo mais generico que existe para extensão
         var fileName = "product_exported" + fileExtension;
 
@@ -87,91 +87,109 @@ public class ProductController implements ProductControllerDocs {
                 .body(file);
     }
 
-@GetMapping(value = "/findByName/{name}",
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findProductByName(
-        @PathVariable(value = "name") String name,
-        @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
-        @RequestParam(value = "size", defaultValue = "12") Integer size, //quantidade de registros por pagina
-        @RequestParam(value = "direction", defaultValue = "asc") String direction //ordenacao
-) {
-    var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));
-    var products = service.findProductByName(name, pageable);
-    return ResponseEntity.ok().body(products);
-}
+    @GetMapping(value = "/findByName/{name}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findProductByName(
+            @PathVariable(value = "name") String name,
+            @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
+            @RequestParam(value = "size", defaultValue = "12") Integer size, //quantidade de registros por pagina
+            @RequestParam(value = "direction", defaultValue = "asc") String direction //ordenacao
+    ) {
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));
+        var products = service.findProductByName(name, pageable);
+        return ResponseEntity.ok().body(products);
+    }
 
-@GetMapping(value = "/{id}",
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-    ProductDTO product = service.findById(id);
-    return ResponseEntity.ok().body(product);
-}
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        ProductDTO product = service.findById(id);
+        return ResponseEntity.ok().body(product);
+    }
 
-@PostMapping(
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE},
-        consumes = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product) {
-    ProductDTO product1 = service.insert(product);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product1.getId()).toUri();
-    return ResponseEntity.created(uri).body(product1);
-}
+    @GetMapping(value = "/export/{id}",
+            produces = {
+                    MediaType.APPLICATION_PDF_VALUE}
+    )
+    @Override
+    public ResponseEntity<Resource> export(@PathVariable("id") Long id, HttpServletRequest request) {
+        String acceptHeader = request.getHeader(HttpHeaders.ACCEPT);
 
-@PostMapping(value = "/massCreation",
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<List<ProductDTO>> massCreation(@RequestParam("file") MultipartFile file) {
-    List<ProductDTO> product1 = service.massCreation(file);
-    return ResponseEntity.ok().body(product1);
-}
+        Resource file = service.exportProduct(id, acceptHeader);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(acceptHeader))
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=product.pdf")
+                .body(file);
+    }
+
+    @PostMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product) {
+        ProductDTO product1 = service.insert(product);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product1.getId()).toUri();
+        return ResponseEntity.created(uri).body(product1);
+    }
+
+    @PostMapping(value = "/massCreation",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<List<ProductDTO>> massCreation(@RequestParam("file") MultipartFile file) {
+        List<ProductDTO> product1 = service.massCreation(file);
+        return ResponseEntity.ok().body(product1);
+    }
 
 
-@PutMapping(value = "/{id}",
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE},
-        consumes = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<ProductDTO> updateById(@RequestBody ProductDTO product, @PathVariable Long id) {
-    ProductDTO product1 = service.updateById(product, id);
-    return ResponseEntity.ok().body(product1);
-}
+    @PutMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<ProductDTO> updateById(@RequestBody ProductDTO product, @PathVariable Long id) {
+        ProductDTO product1 = service.updateById(product, id);
+        return ResponseEntity.ok().body(product1);
+    }
 
-@PatchMapping(value = "/{id}",
-        produces = {MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE}
-)
-@Override
-public ResponseEntity<ProductDTO> disableProduct(@PathVariable Long id) {
-    ProductDTO product1 = service.disableProduct(id);
-    return ResponseEntity.ok().body(product1);
-}
+    @PatchMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE}
+    )
+    @Override
+    public ResponseEntity<ProductDTO> disableProduct(@PathVariable Long id) {
+        ProductDTO product1 = service.disableProduct(id);
+        return ResponseEntity.ok().body(product1);
+    }
 
-@DeleteMapping(value = "/{id}")
-@Override
-public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-    service.deleteById(id);
-    return ResponseEntity.noContent().build();
-}
+    @DeleteMapping(value = "/{id}")
+    @Override
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

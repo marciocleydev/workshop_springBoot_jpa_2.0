@@ -1,0 +1,57 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="categories" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="537bc0ce-b38a-4f39-9fe9-36f484f91249">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="c2FsZXNhcHAudGJfY2F0ZWdvcnkgQVMgLDEwMywxODMsYmYwZWVhZDUtOTg2ZC00ZTVhLTk4N2Et&#xa;MzY5YjQ3YjMwY2RlOw=="/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL connection"/>
+	<style name="zebraStyle" mode="Opaque" forecolor="#FFFFFF" backcolor="#CFCFCF">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<parameter name="PRODUCT_ID" class="java.lang.String"/>
+	<parameter name="SUB_REPORT_DATA_SOURCE" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_category"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_category"/>
+	</field>
+	<field name="id_category" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_category"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_category"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_category_product"/>
+	</field>
+	<field name="id_product" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_product"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_product"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_category_product"/>
+	</field>
+	<background splitType="Stretch"/>
+	<columnHeader height="30" splitType="Stretch">
+		<element kind="staticText" uuid="d3da907f-4226-4904-9420-75e5a8cd8f93" mode="Opaque" x="41" y="0" width="111" height="30" forecolor="#FCFAFA" backcolor="#19515E" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Code]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4a793246-7e99-40b4-a449-c8c06f6f01de"/>
+		</element>
+		<element kind="staticText" uuid="ed019446-6233-40c4-889e-4bbfa4a2a595" mode="Opaque" x="152" y="0" width="368" height="30" forecolor="#FCFAFA" backcolor="#19515E" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Name]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="caf2be90-c56a-4d8e-8a9e-9f2da527a80b"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<element kind="textField" uuid="82c89226-23c5-4fce-a2e6-8c541a0642dc" mode="Opaque" x="41" y="0" width="111" height="30" forecolor="#030303" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle" style="zebraStyle">
+				<expression><![CDATA[$F{id}]]></expression>
+				<property name="com.jaspersoft.studio.data.sql.tables" value="c2FsZXNhcHAudGJfY2F0ZWdvcnkgQVMgLDEwMywxODMsYmYwZWVhZDUtOTg2ZC00ZTVhLTk4N2Et&#xa;MzY5YjQ3YjMwY2RlOw=="/>
+				<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL connection"/>
+			</element>
+			<element kind="textField" uuid="74b4d936-0139-4a15-8b45-795de9fa8f40" mode="Opaque" x="152" y="0" width="368" height="30" forecolor="#030303" fontSize="11.0" hTextAlign="Center" vTextAlign="Middle" style="zebraStyle">
+				<expression><![CDATA[$F{name}]]></expression>
+				<property name="com.jaspersoft.studio.data.sql.tables" value="c2FsZXNhcHAudGJfY2F0ZWdvcnkgQVMgLDEwMywxODMsYmYwZWVhZDUtOTg2ZC00ZTVhLTk4N2Et&#xa;MzY5YjQ3YjMwY2RlOw=="/>
+				<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL connection"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

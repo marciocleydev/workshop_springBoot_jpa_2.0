@@ -3,6 +3,9 @@ cors:
   originPattern: http://localhost:8080,http://localhost:3000,https://www.linkedin.com/in/marciocleydev
 file:
   upload-dir: /intellij/API_file_dir/upload
+email:
+  subject: "Defaul subject"
+  message: "Default message"
 spring:
   application:
     name: rest-spring-boot-and-java
@@ -20,6 +23,18 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
     open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   servlet:
     multipart:
       enabled: true
@@ -31,6 +46,8 @@ logging:
     root: INFO #projeto completo.
 
     com.myProject: DEBUG  # Pacote raiz do PROJETO!
+
+    net.sf.jasperreports.engine.* : trace
 
     # Logs do Spring Web (para ver resolução de exceções e endpoints)
     org.springframework.web: DEBUG

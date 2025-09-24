@@ -93,6 +93,18 @@ public class ProductService {
         return dto;
     }
 
+    public Resource exportProduct(Long id, String acceptHeader) {
+        logger.info("Exporting data of one Product!");
+
+        var dto = productMapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportProduct(dto);
+        } catch (Exception e) {
+            throw new RuntimeException("Error exporting products",e);
+        }
+    }
+
     public ProductDTO insert(ProductDTO product) {
         logger.info("Creating a new product!");
         var dto = productMapper.toDTO(repository.save(productMapper.toEntity(product)));
@@ -103,7 +115,7 @@ public class ProductService {
     public ProductDTO updateById(ProductDTO newProductDTO, Long id) {
         logger.info("Updating one product!");
         try {
-            Product oldProduct = repository.getReferenceById(id);
+            Product oldProduct = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
             updateGeneration(oldProduct, newProductDTO);
             var dto = productMapper.toDTO(repository.save(oldProduct));
             addHateoasLinks(dto);
@@ -118,6 +130,7 @@ public class ProductService {
         oldProduct.setDescription(newProduct.getDescription());
         oldProduct.setImgUrl(newProduct.getImgUrl());
         oldProduct.setPrice(newProduct.getPrice());
+        oldProduct.setEnabled(newProduct.getEnabled());
     }
 
     public void deleteById(Long id) {

@@ -9,4 +9,5 @@ import java.util.List;
 public interface FileExporter {
 
     Resource exportFile(List<ProductDTO>products) throws Exception;
+    Resource exportProduct(ProductDTO product) throws Exception;
 }
