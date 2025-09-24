@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -52,8 +53,8 @@ public class ProductController implements ProductControllerDocs {
     @GetMapping(value = "/exportPage",
             produces = {MediaType.APPLICATION_JSON_VALUE,
                     MediaTypes.APPLICATION_XLSX_VALUE,
-                    MediaTypes.APPLICATION_CSV_VALUE}
-    )
+                    MediaTypes.APPLICATION_PDF_VALUE,
+                    MediaTypes.APPLICATION_CSV_VALUE})
     @Override
     public ResponseEntity<Resource> exportPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
@@ -68,11 +69,18 @@ public class ProductController implements ProductControllerDocs {
 
         Resource file = service.exportPage(pageable, acceptHeader);
 
+        Map<String, String> extensionsMap = Map.of(
+                MediaTypes.APPLICATION_XLSX_VALUE,".xlsx",
+                MediaTypes.APPLICATION_CSV_VALUE,".csv",
+                MediaTypes.APPLICATION_PDF_VALUE,".pdf"
+        );
+
+        var fileExtension = extensionsMap.getOrDefault(acceptHeader,"");
         var contentType = acceptHeader != null ? acceptHeader : "application/octet-stream"; // tipo mais generico que existe para extensão
-        var fileExtension = MediaTypes.APPLICATION_XLSX_VALUE.equalsIgnoreCase(contentType) ? ".xlsx" : ".csv";
         var fileName = "product_exported" + fileExtension;
 
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + fileName + "\"")

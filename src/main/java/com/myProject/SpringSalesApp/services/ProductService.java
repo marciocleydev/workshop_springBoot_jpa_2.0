@@ -5,7 +5,6 @@ import com.myProject.SpringSalesApp.controllers.ProductController;
 import com.myProject.SpringSalesApp.entities.Product;
 import com.myProject.SpringSalesApp.exceptions.BadRequestException;
 import com.myProject.SpringSalesApp.exceptions.FileStorageException;
-import com.myProject.SpringSalesApp.file.exporter.MediaTypes;
 import com.myProject.SpringSalesApp.file.exporter.contract.FileExporter;
 import com.myProject.SpringSalesApp.file.exporter.factory.FileExporterFactory;
 import com.myProject.SpringSalesApp.file.importer.contract.FileImporter;
@@ -76,7 +75,7 @@ public class ProductService {
             FileExporter exporter = this.exporter.getExporter(acceptHeader);
             return exporter.exportFile(products);
         } catch (Exception e) {
-            throw new RuntimeException("Error exporting products");
+            throw new RuntimeException("Error exporting products",e);
         }
     }
 

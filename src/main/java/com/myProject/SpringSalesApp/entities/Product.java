@@ -24,7 +24,7 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private boolean enabled = true;
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // quando faz a consulta de produtos no repositorio ja trás juntos tambem as categorias associadas.
     @JoinTable(name = "tb_category_product",joinColumns = @JoinColumn(name = "id_product"),inverseJoinColumns = @JoinColumn(name = "id_category"))
     private Set<Category> categories = new HashSet<>();
     @OneToMany(mappedBy = "id.product")

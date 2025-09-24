@@ -23,6 +23,8 @@
 		<mapstruct.version>1.6.2</mapstruct.version>
         <commons-csv.version>1.14.1</commons-csv.version>
         <poi-ooxml.version>5.4.1</poi-ooxml.version>
+        <jasperreports.version>7.0.3</jasperreports.version>
+        <zxing.version>3.5.3</zxing.version>
 	</properties>
 
 	<dependencies>
@@ -57,6 +59,41 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi-ooxml.version}</version>
+        </dependency>
+
+        <!-- jasperreports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+
+        <!--jasperreports-fonts -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+
+        <!--jasperreports-pdf-->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-pdf</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+
+        <!-- zxing/javase -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
+
+        <!-- zxing/core -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing.version}</version>
         </dependency>
 
 		<!-- HATEOAS -->
