@@ -19,7 +19,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<mapstruct.version>1.6.2</mapstruct.version>
         <commons-csv.version>1.14.1</commons-csv.version>
         <poi-ooxml.version>5.4.1</poi-ooxml.version>
