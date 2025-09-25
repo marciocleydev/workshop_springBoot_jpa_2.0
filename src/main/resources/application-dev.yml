@@ -19,7 +19,7 @@ spring:
       ddl-auto: none #depois das migrations
 
     properties:
-      hibernete:
+      hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
     open-in-view: false
