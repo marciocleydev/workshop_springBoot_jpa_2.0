@@ -163,7 +163,7 @@ public class ProductService {
     }
 
     @Transactional
-    // como eu mesmo que criei essa operaçao no repositorio preciso informar @Transactional, pois essa operação precisa obedecer o ACID
+    // Custom repository operation requires @Transactional annotation to ensure ACID compliance
     public ProductDTO disableProduct(Long id) {
         logger.info("Disabling one product!");
         repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -206,7 +206,7 @@ public class ProductService {
                     addHateoasLinks(dto);
                     return dto;
                 });
-        //adiciona link hateoas a página
+        // Add HATEOAS links to the page
         Link findAllLInk = WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(ProductController.class)
                                 .findAll(
