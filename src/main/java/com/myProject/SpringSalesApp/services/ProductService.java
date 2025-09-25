@@ -41,23 +41,30 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ProductService {
-    @Autowired
-    ProductRepository repository;
-
-    @Autowired
-    FileImporterFactory importer;
-
-    @Autowired
-    FileExporterFactory exporter;
-
-    @Autowired
-    ProductMapper productMapper;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    PagedResourcesAssembler<ProductDTO> assembler;
+    private final ProductRepository repository;
+    private final FileImporterFactory importer;
+    private final FileExporterFactory exporter;
+    private final ProductMapper productMapper;
+    private final PagedResourcesAssembler<ProductDTO> assembler;
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+    
+    // Constants for pagination defaults
+    private static final int DEFAULT_PAGE = 1;
+    private static final int DEFAULT_PAGE_SIZE = 12;
+    private static final String DEFAULT_SORT_DIRECTION = "asc";
+
+    public ProductService(ProductRepository repository, 
+                         FileImporterFactory importer,
+                         FileExporterFactory exporter,
+                         ProductMapper productMapper,
+                         PagedResourcesAssembler<ProductDTO> assembler) {
+        this.repository = repository;
+        this.importer = importer;
+        this.exporter = exporter;
+        this.productMapper = productMapper;
+        this.assembler = assembler;
+    }
 
     public PagedModel<EntityModel<ProductDTO>> findAll(Pageable pageable) {
         logger.info("Finding all Products!");
@@ -81,13 +88,18 @@ public class ProductService {
 
     public PagedModel<EntityModel<ProductDTO>> findProductByName(String name, Pageable pageable) {
         logger.info("Finding Products by name!");
-
+        if (name == null || name.trim().isEmpty()) {
+            throw new BadRequestException("Product name cannot be null or empty");
+        }
         var products = repository.findProductByName(name, pageable);
         return buildPagedModel(pageable, products);
     }
 
     public ProductDTO findById(Long id) {
         logger.info("Finding one Product!");
+        if (id == null || id <= 0) {
+            throw new BadRequestException("Product ID must be a positive number");
+        }
         var dto = productMapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
         addHateoasLinks(dto);
         return dto;
@@ -107,6 +119,12 @@ public class ProductService {
 
     public ProductDTO insert(ProductDTO product) {
         logger.info("Creating a new product!");
+        if (product == null) {
+            throw new BadRequestException("Product data cannot be null");
+        }
+        if (product.getName() == null || product.getName().trim().isEmpty()) {
+            throw new BadRequestException("Product name is required");
+        }
         var dto = productMapper.toDTO(repository.save(productMapper.toEntity(product)));
         addHateoasLinks(dto);
         return dto;
@@ -201,13 +219,13 @@ public class ProductService {
 
     private void addHateoasLinks(ProductDTO dto) {
         dto.add(linkTo(methodOn(ProductController.class).findById(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(ProductController.class).findProductByName(dto.getName(),1, 12, "asc")).withRel("findByName").withType("GET"));
+        dto.add(linkTo(methodOn(ProductController.class).findProductByName(dto.getName(), DEFAULT_PAGE, DEFAULT_PAGE_SIZE, DEFAULT_SORT_DIRECTION)).withRel("findByName").withType("GET"));
         dto.add(linkTo(methodOn(ProductController.class).deleteById(dto.getId())).withRel("delete").withType("DELETE"));
         dto.add(linkTo(methodOn(ProductController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
-        dto.add(linkTo(methodOn(ProductController.class).findAll(1, 12, "asc")).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(ProductController.class).findAll(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, DEFAULT_SORT_DIRECTION)).withRel("findAll").withType("GET"));
         dto.add(linkTo(methodOn(ProductController.class).insert(dto)).withRel("create").withType("POST"));
         dto.add(linkTo(methodOn(ProductController.class).updateById(dto, dto.getId())).withRel("update").withType("PUT"));
-        dto.add(linkTo(methodOn(ProductController.class).disableProduct(dto.getId())).withRel("disabe").withType("PATCH"));
-        dto.add(linkTo(methodOn(ProductController.class).exportPage(1, 12, "asc", null)).withRel("exportPage").withType("GET").withTitle("Export products"));
+        dto.add(linkTo(methodOn(ProductController.class).disableProduct(dto.getId())).withRel("disable").withType("PATCH"));
+        dto.add(linkTo(methodOn(ProductController.class).exportPage(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, DEFAULT_SORT_DIRECTION, null)).withRel("exportPage").withType("GET").withTitle("Export products"));
     }
 }

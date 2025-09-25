@@ -30,8 +30,11 @@ import java.util.Map;
 @Tag(name = "Product Resource", description = "Endpoints for product management")
 public class ProductController implements ProductControllerDocs {
 
-    @Autowired
-    private ProductService service;
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE,
