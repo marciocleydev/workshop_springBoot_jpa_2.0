@@ -30,8 +30,11 @@ import java.util.Map;
 @Tag(name = "Product Resource", description = "Endpoints for product management")
 public class ProductController implements ProductControllerDocs {
 
-    @Autowired
-    private ProductService service;
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE,
@@ -40,9 +43,9 @@ public class ProductController implements ProductControllerDocs {
     )
     @Override
     public ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findAll(
-            @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
-            @RequestParam(value = "size", defaultValue = "12") Integer size, //quantidade de registros por pagina
-            @RequestParam(value = "direction", defaultValue = "asc") String direction //quantidade de registros por pagina
+            @RequestParam(value = "page", defaultValue = "0") Integer page, // page number
+            @RequestParam(value = "size", defaultValue = "12") Integer size, // records per page
+            @RequestParam(value = "direction", defaultValue = "asc") String direction // sorting direction
     ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));
@@ -57,9 +60,9 @@ public class ProductController implements ProductControllerDocs {
                     MediaTypes.APPLICATION_CSV_VALUE})
     @Override
     public ResponseEntity<Resource> exportPage(
-            @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
-            @RequestParam(value = "size", defaultValue = "12") Integer size, //quantidade de registros por pagina
-            @RequestParam(value = "direction", defaultValue = "asc") String direction, //quantidade de registros por pagina
+            @RequestParam(value = "page", defaultValue = "0") Integer page, // page number
+            @RequestParam(value = "size", defaultValue = "12") Integer size, // records per page
+            @RequestParam(value = "direction", defaultValue = "asc") String direction, // sorting direction
             HttpServletRequest request
     ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
@@ -76,7 +79,7 @@ public class ProductController implements ProductControllerDocs {
         );
 
         var fileExtension = extensionsMap.getOrDefault(acceptHeader, "");
-        var contentType = acceptHeader != null ? acceptHeader : "application/octet-stream"; // tipo mais generico que existe para extensão
+        var contentType = acceptHeader != null ? acceptHeader : "application/octet-stream"; // most generic content type for unknown extensions
         var fileName = "product_exported" + fileExtension;
 
         return ResponseEntity.ok()
@@ -95,9 +98,9 @@ public class ProductController implements ProductControllerDocs {
     @Override
     public ResponseEntity<PagedModel<EntityModel<ProductDTO>>> findProductByName(
             @PathVariable(value = "name") String name,
-            @RequestParam(value = "page", defaultValue = "0") Integer page, //numero da pagina
-            @RequestParam(value = "size", defaultValue = "12") Integer size, //quantidade de registros por pagina
-            @RequestParam(value = "direction", defaultValue = "asc") String direction //ordenacao
+            @RequestParam(value = "page", defaultValue = "0") Integer page, // page number
+            @RequestParam(value = "size", defaultValue = "12") Integer size, // records per page
+            @RequestParam(value = "direction", defaultValue = "asc") String direction // sorting direction
     ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));

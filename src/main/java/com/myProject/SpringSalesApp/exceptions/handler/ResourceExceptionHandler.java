@@ -31,21 +31,21 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(FileStorageException.class)
     public ResponseEntity<StandardError> FileStorageExceptions(FileStorageException e, HttpServletRequest request){
-        String error = "Data integrity violation";
+        String error = "File storage error";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<StandardError> handlerFileNotFoundException(FileStorageException e, HttpServletRequest request){
-        String error = "Data integrity violation";
+    public ResponseEntity<StandardError> handlerFileNotFoundException(FileNotFoundException e, HttpServletRequest request){
+        String error = "File not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<StandardError> handlerBadRequestException(BadRequestException e, HttpServletRequest request){
-        String error = "Data integrity violation";
+        String error = "Bad request";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);

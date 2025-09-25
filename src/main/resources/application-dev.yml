@@ -2,9 +2,9 @@
 cors:
   originPattern: http://localhost:8080,http://localhost:3000,https://www.linkedin.com/in/marciocleydev
 file:
-  upload-dir: /intellij/API_file_dir/upload
+  upload-dir: ${UPLOAD_DIR:/tmp/uploads}
 email:
-  subject: "Defaul subject"
+  subject: "Default subject"
   message: "Default message"
 spring:
   application:
@@ -12,14 +12,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/salesApp?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: 81050050
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
   jpa:
     hibernate:
       ddl-auto: none #depois das migrations
 
     properties:
-      hibernete:
+      hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: false
     open-in-view: false
