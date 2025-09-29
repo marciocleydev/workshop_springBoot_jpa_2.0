@@ -680,7 +680,7 @@ insert into tb_product (name, description, price, img_url, enabled) values ('Coo
  ('Honeycrisp Apple Chips', 'Crispy and sweet dried apple slices', 3.49, 'http://dummyimage.com/104x100.png/dddddd/000000', b'1'),
  ('Car Seat Organizer', 'Storage solutions for keeping your car tidy and organized.', 14.99, 'http://dummyimage.com/236x100.png/dddddd/000000', b'0'),
  ('Almond Crunch Granola Bars', 'Nutty granola bars for healthy snacking.', 3.49, 'http://dummyimage.com/225x100.png/5fa2dd/ffffff', b'1'),
- ('Waffle Maker', 'Make delicious waffles with this user-friendly device.', 39.99, 'http://dummyimage.com/194x100.png/cc0000/ffffff', b'1'),
+ ('Waffle Maker', 'Make delicious waffles with this apiUser-friendly device.', 39.99, 'http://dummyimage.com/194x100.png/cc0000/ffffff', b'1'),
  ('Personalized Pet ID Tags', 'Custom engraved ID tags for pets with your contact information.', 9.99, 'http://dummyimage.com/113x100.png/5fa2dd/ffffff', b'0'),
  ('Chocolate Protein Powder', 'Rich chocolate protein powder for smoothies and baking.', 24.99, 'http://dummyimage.com/209x100.png/5fa2dd/ffffff', b'1'),
  ('Chicken Fajita Kit', 'All ingredients included for delicious chicken fajitas.', 8.99, 'http://dummyimage.com/209x100.png/cc0000/ffffff', b'1'),

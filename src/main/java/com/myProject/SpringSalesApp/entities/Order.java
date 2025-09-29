@@ -3,7 +3,6 @@ package com.myProject.SpringSalesApp.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.myProject.SpringSalesApp.entities.enums.OrderStatus;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ManyToAny;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,7 +24,7 @@ public class Order implements Serializable {
     private Integer status;
     @ManyToOne
     @JoinColumn(name = "id_client")
-    private User client;
+    private ApiUser client;
 
     @OneToMany(mappedBy = "id.order")
     Set<OrderItem> items =  new HashSet<>();
@@ -35,7 +34,7 @@ public class Order implements Serializable {
     public Order(){
     }
 
-    public Order(Long id, Instant moment, OrderStatus status, User client) {
+    public Order(Long id, Instant moment, OrderStatus status, ApiUser client) {
         this.id = id;
         this.moment = moment;
         this.client = client;
@@ -64,11 +63,11 @@ public class Order implements Serializable {
         return status.getId();
     }
 
-    public User getClient() {
+    public ApiUser getClient() {
         return client;
     }
 
-    public void setClient(User client) {
+    public void setClient(ApiUser client) {
         this.client = client;
     }
 

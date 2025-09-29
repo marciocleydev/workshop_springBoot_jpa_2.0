@@ -1,6 +1,6 @@
 package com.myProject.SpringSalesApp.services;
 
-import com.myProject.SpringSalesApp.entities.User;
+import com.myProject.SpringSalesApp.entities.ApiUser;
 import com.myProject.SpringSalesApp.repositories.UserRepository;
 import com.myProject.SpringSalesApp.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.exceptions.ResourceNotFoundException;
@@ -13,34 +13,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class ApiUserService {
     @Autowired
     UserRepository repository;
 
-    public List<User> findAll(){
+    public List<ApiUser> findAll(){
         return repository.findAll();
     }
-    public User findById(Long id){
+    public ApiUser findById(Long id){
         try {
-            Optional<User> user = repository.findById(id);
+            Optional<ApiUser> user = repository.findById(id);
             return user.get();
         }
         catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);
         }
     }
-    public User insert(User user){
-       return repository.save(user);
+    public ApiUser insert(ApiUser apiUser){
+       return repository.save(apiUser);
     }
-    public User updateById(User newUser, Long id){
-        User oldUser = repository.getReferenceById(id);
-        updateGeneration(oldUser,newUser);
-        return repository.save(oldUser);
+    public ApiUser updateById(ApiUser newApiUser, Long id){
+        ApiUser oldApiUser = repository.getReferenceById(id);
+        updateGeneration(oldApiUser, newApiUser);
+        return repository.save(oldApiUser);
     }
-    private void updateGeneration(User oldUser, User newUser){
-        oldUser.setName(newUser.getName());
-        oldUser.setEmail(newUser.getEmail());
-        oldUser.setPhone(newUser.getPhone());
+    private void updateGeneration(ApiUser oldApiUser, ApiUser newApiUser){
+        oldApiUser.setName(newApiUser.getName());
+        oldApiUser.setEmail(newApiUser.getEmail());
+        oldApiUser.setPhone(newApiUser.getPhone());
     }
     public void deleteById(Long id) {
         try {

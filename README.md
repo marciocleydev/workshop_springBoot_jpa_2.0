@@ -76,10 +76,10 @@ A aplicação estará disponível em:
 
 #📬 Endpoints Principais
 Método	Endpoint	Descrição
-- GET	/users	Lista todos usuários
-- GET	/users/{id}	Busca por ID
-- POST	/users	Cadastra novo usuário
-- PUT	/users/{id}	Atualiza usuário
-- DELETE	/users/{id}	Remove usuário
+- GET	/apiUsers	Lista todos usuários
+- GET	/apiUsers/{id}	Busca por ID
+- POST	/apiUsers	Cadastra novo usuário
+- PUT	/apiUsers/{id}	Atualiza usuário
+- DELETE	/apiUsers/{id}	Remove usuário
 # 🛒 Workshop Spring Boot JPA / Hibernate
 

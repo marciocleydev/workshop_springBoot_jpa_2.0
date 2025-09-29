@@ -47,8 +47,6 @@ logging:
 
     com.myProject: DEBUG  # Pacote raiz do PROJETO!
 
-    net.sf.jasperreports.engine.* : trace
-
     # Logs do Spring Web (para ver resolução de exceções e endpoints)
     org.springframework.web: DEBUG
 

@@ -28,7 +28,7 @@ public class Address implements Serializable {
     private String country;
     @OneToOne
     @JoinColumn(name = "id_user")
-    private User client;
+    private ApiUser client;
 
     public Address() {
     }
@@ -90,10 +90,10 @@ public class Address implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
-    public User getClient() {
+    public ApiUser getClient() {
         return client;
     }
-    public void setClient(User client) {
+    public void setClient(ApiUser client) {
         this.client = client;
     }
 

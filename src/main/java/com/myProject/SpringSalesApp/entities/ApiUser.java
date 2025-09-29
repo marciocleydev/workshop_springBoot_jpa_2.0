@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_User")
-public class User implements Serializable {
+public class ApiUser implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -28,10 +28,10 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
-    public User(){
+    public ApiUser(){
     }
 
-    public User(Long id, String name, String email, String phone, String passWord) {
+    public ApiUser(Long id, String name, String email, String phone, String passWord) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -94,8 +94,8 @@ public class User implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
+        ApiUser apiUser = (ApiUser) o;
+        return Objects.equals(id, apiUser.id);
     }
 
     @Override
