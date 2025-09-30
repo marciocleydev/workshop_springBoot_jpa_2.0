@@ -50,5 +50,12 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public ResponseEntity<StandardError> handlerInvalidJwtAuthenticationException(BadRequestException e, HttpServletRequest request){
+        String error = "Invalid JWT token";
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
 
 }

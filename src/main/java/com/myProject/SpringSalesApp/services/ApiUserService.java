@@ -1,7 +1,7 @@
 package com.myProject.SpringSalesApp.services;
 
 import com.myProject.SpringSalesApp.entities.ApiUser;
-import com.myProject.SpringSalesApp.repositories.UserRepository;
+import com.myProject.SpringSalesApp.repositories.ApiUserRepository;
 import com.myProject.SpringSalesApp.exceptions.DataIntegrityException;
 import com.myProject.SpringSalesApp.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class ApiUserService {
     @Autowired
-    UserRepository repository;
+    ApiUserRepository repository;
 
     public List<ApiUser> findAll(){
         return repository.findAll();

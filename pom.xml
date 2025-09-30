@@ -24,6 +24,7 @@
         <commons-csv.version>1.14.1</commons-csv.version>
         <poi-ooxml.version>5.4.1</poi-ooxml.version>
         <jasperreports.version>7.0.3</jasperreports.version>
+        <java-jwt.version>4.5.0</java-jwt.version>
         <zxing.version>3.5.3</zxing.version>
 	</properties>
 
@@ -33,6 +34,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- Spring Boot security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+        <!-- java-jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${java-jwt.version}</version>
+        </dependency>
 
 		<!-- Spring Boot mail -->
 		<dependency>
