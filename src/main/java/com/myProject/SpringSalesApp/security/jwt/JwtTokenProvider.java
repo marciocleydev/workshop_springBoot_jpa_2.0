@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -50,6 +51,28 @@ public class JwtTokenProvider {
         String accessToken = getAccessToken(username, roles, now, validity);
         String refreshToken = getRefreshToken(username, roles, now);
         return new TokenDTO(username, true, now, validity, accessToken, refreshToken);
+    }
+
+    public TokenDTO refreshToken(String username, String refreshToken) {
+        var token = refreshTokenContainsBearer(refreshToken);
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+
+        String usernameFromtoken = decodedJWT.getSubject();
+        if (!username.equals(usernameFromtoken)) {
+            // Username do path não bate com o do token
+            throw new UsernameNotFoundException("username from RefreshToken does not match the username send by url!");
+        }
+        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
+        return createAccessToken(username, roles);
+    }
+
+    private static String refreshTokenContainsBearer(String refreshToken) {
+        if (StringUtils.hasLength(refreshToken) && refreshToken.startsWith("Bearer ")){
+           return refreshToken.substring("Bearer ".length());
+        }
+        return refreshToken;
     }
 
     private String getAccessToken(String username, List<String> roles, Date now, Date validity) {

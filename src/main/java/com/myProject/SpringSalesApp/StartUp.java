@@ -26,8 +26,9 @@ public class StartUp {
                 DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
 
                 passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder);
+                //gera o hash da senha, ideal para salvar no banco de dados
                 var pass1 = passwordEncoder.encode("admin123");
-                var pass2 = passwordEncoder.encode("admin234");
+                var pass2 = passwordEncoder.encode("M@rcio81050050");
 
         System.out.println(pass1);
         System.out.println(pass2);

@@ -66,7 +66,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/auth/signin",
                                         "/auth/refresh/**",
-                                        "/auth/createUser",
+                                        "/auth/createUser", // nao deixar esse cara exposto em ambiente de produçao ele é criptografar a senha
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**")
                                 .permitAll()
