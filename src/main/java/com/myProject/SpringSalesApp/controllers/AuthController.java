@@ -1,8 +1,8 @@
 package com.myProject.SpringSalesApp.controllers;
 
 import com.myProject.SpringSalesApp.DTO.security.AccountCredentialsDTO;
+import com.myProject.SpringSalesApp.controllers.docs.AuthControllerDocs;
 import com.myProject.SpringSalesApp.services.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication", description = "Authentication API")
 @RestController
 @RequestMapping(value = "/auth")
-public class AuthController implements com.myProject.SpringSalesApp.controllers.docs.AuthControllerDocs {
+public class AuthController implements AuthControllerDocs {
 
     @Autowired
     private AuthService service;
@@ -28,7 +28,7 @@ public class AuthController implements com.myProject.SpringSalesApp.controllers.
         if (token == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         }
-        return ResponseEntity.ok().body(token);
+        return token;
     }
 
     @PutMapping("/refresh/{username}")
@@ -44,7 +44,7 @@ public class AuthController implements com.myProject.SpringSalesApp.controllers.
         if (token == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
         }
-        return ResponseEntity.ok().body(token);
+        return token;
     }
 
     @PostMapping("/createUser")

@@ -3,7 +3,9 @@ package com.myProject.SpringSalesApp.integrationtests.controllers.withXml;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.myProject.SpringSalesApp.config.TestConfigs;
+import com.myProject.SpringSalesApp.integrationtests.dto.AccountCredentialsDTO;
 import com.myProject.SpringSalesApp.integrationtests.dto.ProductDTO;
+import com.myProject.SpringSalesApp.integrationtests.dto.TokenDTO;
 import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.json.WrapperProductDTO;
 import com.myProject.SpringSalesApp.integrationtests.dto.wrappers.xml_yaml.PageModelProduct;
 import com.myProject.SpringSalesApp.integrationtests.testcontainers.AbstractIntagrationTest;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -28,15 +31,37 @@ class ProductControllerXmlTest extends AbstractIntagrationTest {
     private static RequestSpecification specification;
     private static XmlMapper objectMapper;
     private static ProductDTO productDTO;
+    private static TokenDTO tokenDTO;
 
 
     @BeforeAll
-    // vai criar apenas 1 instancia para o test todoo, o BeforeEach iria criar uma instancia para cada metodo.
     static void setUp() {
-
         objectMapper = new XmlMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);// nao da falha quando o Json não trás links HATEOAS.
         productDTO = new ProductDTO();
+        tokenDTO = new TokenDTO();
+    }
+
+    @Order(0)
+    @Test
+    void signin() {
+        AccountCredentialsDTO credentials = new AccountCredentialsDTO("marcio", "admin123");
+
+        tokenDTO = given()
+                .basePath("/auth/signin")
+                .port(TestConfigs.SERVER_PORT)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(credentials)
+                .when()
+                .post()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(TokenDTO.class);
+
+        assertNotNull(tokenDTO.getAccessToken());
+        assertNotNull(tokenDTO.getRefreshToken());
     }
 
     @Order(1)
@@ -216,6 +241,7 @@ class ProductControllerXmlTest extends AbstractIntagrationTest {
     private void setSpecification() {
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_MARCIOCLEY)
+                .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenDTO.getAccessToken())
                 .setBasePath("/products")
                 .setPort(TestConfigs.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
