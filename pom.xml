@@ -26,6 +26,7 @@
         <jasperreports.version>7.0.3</jasperreports.version>
         <java-jwt.version>4.5.0</java-jwt.version>
         <zxing.version>3.5.3</zxing.version>
+        <flyway.version>11.13.2</flyway.version>
 	</properties>
 
 	<dependencies>
@@ -147,10 +148,13 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
 
 		<!-- MapStruct -->
