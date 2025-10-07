@@ -25,7 +25,7 @@ jobs:
           cache: maven
 
       - name: Build Application .jar
-        working-directory: ./ #indica o diretorio onde está o pom do projeto no github, nesse caso está na raiz do projeto
+        working-directory: ./SpringSalesApp #indica o diretorio onde está o pom do projeto no github, nesse caso está na raiz do projeto
         run: mvn clean package -DskipTests
 
       - name: Docker compose build

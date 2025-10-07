@@ -17,7 +17,7 @@ services:
     image: marciocleydev/salesapp
     restart: always
     build: ./SpringSalesApp #informando para o docker-compose que está na raiz, onde está o diretorio que contém o dockerfile
-    working_dir: /salesApp
+    working_dir: /salesApp #definindo o diretório de trabalho dentro do container
     environment:
       TZ: America/Sao_Paulo
       SPRING.DATASOURCE.URL: jdbc:mysql://db:3306/salesApp?useTimezone=true&serverTimezone=UTC
