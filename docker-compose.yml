@@ -8,7 +8,7 @@ services:
       MYSQL_PASSWORD: M@rcio81050050
       MYSQL_DATABASE: salesApp #nome do banco de dados
     ports:
-      - "3308:3306" #porta do host:porta do container
+      - "3308:3306" #porta do host: porta do container
     expose:
       - "3306" # forçando a porta do container para ser acessivel
     networks:
@@ -30,6 +30,20 @@ services:
       - db
     networks:
       - marciocleydev-network
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - marciocleydev-network
+volumes:
+  portainer_data:
+
 networks:
   marciocleydev-network:
     driver: bridge
