@@ -29,7 +29,7 @@ jobs:
         run: mvn clean package
 
       - name: Docker compose build
-        working-directory: ./projetos/SpringSalesApp
+        working-directory: ./ #indica o diretorio onde está o docker-compose.yml, nesse caso está na raiz do projeto
         run: docker compose build
 
       - name: Push to Docker Hub Container Registry

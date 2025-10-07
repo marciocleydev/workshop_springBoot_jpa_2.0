@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:9.4.0 #procucar no docker hub a versão mais recente
+    environment: #definir variavel de ambiente
+      TZ: America/Sao_Paulo  #time_zone
+      MYSQL_ROOT_PASSWORD: 81050050
+      MYSQL_USER: marcio #criar um usuario para o banco diferente do root
+      MYSQL_PASSWORD: M@rcio81050050
+      MYSQL_DATABASE: salesApp #nome do banco de dados
+    ports:
+      - "3308:3306" #porta do host:porta do container
+    expose:
+      - "3306" # forçando a porta do container para ser acessivel
+    networks:
+      - marciocleydev-network
+  salesApp: #nome do serviço neste caso é o nome do projeto
+    image: marciocleydev/salesapp
+    restart: always
+    build: ./SpringSalesApp #informando para o docker-compose que está na raiz, onde está o diretorio que contém o dockerfile
+    working_dir: /salesApp
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.DATASOURCE.URL: jdbc:mysql://db:3306/salesApp?useTimezone=true&serverTimezone=UTC
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: 81050050
+    command: mvn spring-boot:run # executa o comando assim que o container for iniciado
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - marciocleydev-network
+networks:
+  marciocleydev-network:
+    driver: bridge
