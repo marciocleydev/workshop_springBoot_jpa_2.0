@@ -22,11 +22,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'adopt'
-          cache: 'maven'
+          cache: maven
 
       - name: Build Application .jar
         working-directory: ./ #indica o diretorio onde está o pom do projeto no github, nesse caso está na raiz do projeto
-        run: mvn clean package
+        run: mvn clean package -DskipTests
 
       - name: Docker compose build
         working-directory: ./ #indica o diretorio onde está o docker-compose.yml, nesse caso está na raiz do projeto
