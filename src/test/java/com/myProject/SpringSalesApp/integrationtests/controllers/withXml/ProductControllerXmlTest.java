@@ -193,7 +193,7 @@ class ProductControllerXmlTest extends AbstractIntagrationTest {
         assertEquals("Avocados", product5.getName());
         assertEquals("Fresh, creamy avocados ideal for salads and guacamole.", product5.getDescription());
         assertEquals(1.5, product5.getPrice());
-        assertEquals("http://dummyimage.com/128x100.png/cc0000/ffffff", product5.getImgUrl());
+        assertEquals("http://dummyimage.com/247x100.png/ff4444/ffffff", product5.getImgUrl());
         assertTrue(product5.getEnabled());
     }
     @Order(7)
@@ -226,7 +226,7 @@ class ProductControllerXmlTest extends AbstractIntagrationTest {
         assertEquals("Fashionable Scarves Set", product4.getName());
         assertEquals( "Stylish scarves to accessorize any outfit.", product4.getDescription());
         assertEquals(24.99, product4.getPrice());
-        assertEquals("http://dummyimage.com/225x100.png/ff4444/ffffff", product4.getImgUrl());
+        assertEquals("http://dummyimage.com/241x100.png/ff4444/ffffff", product4.getImgUrl());
         assertFalse(product4.getEnabled());
     }
 
