@@ -26,7 +26,7 @@ jobs:
 
       - name: Build Application .jar
         working-directory: ./ #indica o diretorio onde está o pom do projeto no github, nesse caso está na raiz do projeto
-        run: ./mvnw clean package
+        run: mvn clean package
 
       - name: Docker compose build
         working-directory: ./projetos/SpringSalesApp
