@@ -3,7 +3,7 @@ server:
 cors:
   originPattern: http://localhost:8080,http://localhost:3000,https://www.linkedin.com/in/marciocleydev
 file:
-  upload-dir: /home/runner/work/workshop_springBoot_jpa_2.0/uploadDir
+  upload-dir: ${java.io.tmpdir}/uploadDir
 security:
   jwt:
     token:
