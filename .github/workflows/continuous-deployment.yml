@@ -24,17 +24,20 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-
-      - name: Give execute permission to Maven Wrapper
-        run: chmod +x ./SpringSalesApp/mvnw
-
       - name: Build Application .jar
         working-directory: ./SpringSalesApp #indica o diretorio onde está o pom do projeto no github, nesse caso está na raiz do projeto
-        run: ./mvnw clean package
+        run: mvn clean package -DskipTests
 
-      - name: Docker compose build
+      - name: Start MySQL and Application
         working-directory: ./ #indica o diretorio onde está o docker-compose.yml, nesse caso está na raiz do projeto
-        run: docker compose build
+        run: docker compose up -d --build
+
+      - name: Wait for Application to finish migrations
+        run: sleep 30
+
+      - name: Run tests
+        working-directory: ./SpringSalesApp
+        run: mvn verify
 
       - name: Push to Docker Hub Container Registry
         run: | #adiciona '|' para informar que é um comando multi-linha
