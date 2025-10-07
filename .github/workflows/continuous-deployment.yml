@@ -33,7 +33,7 @@ jobs:
         run: docker compose build
 
       - name: Push to Docker Hub Container Registry
-        run:
+        run: | #adiciona '|' para informar que é um comando multi-linha
           #cria tag com o id do github actions, para cada execução ter uma versão com o numero do job
           docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{ secrets.DOCKER_USERNAME }}/salesapp:${{github.run_id}}
           
