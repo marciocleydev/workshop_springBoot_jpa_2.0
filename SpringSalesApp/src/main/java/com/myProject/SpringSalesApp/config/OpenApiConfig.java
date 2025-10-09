@@ -12,7 +12,7 @@ public class OpenApiConfig {
     @Bean
     OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info()
-                .title("REST API's RESTfull from 0 with java, Spring Boot, Kubernetes and Docker")
+                .title("REST API's RESTfull from 0 with java, Spring Boot, Kubernetes and Docker foo bar")
                 .version("v1")
                 .description("REST API's RESTfull from 0 with java, Spring Boot, Kubernetes and Docker")
                 .license(new License()

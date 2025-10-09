@@ -1,0 +1,2 @@
+# Api restful com Spring Boot 3.4.5 and Java 21 by Marcio Cley
+[![Continuous Integration and Delivery with Github Actions](https://github.com/marciocleydev/workshop_springBoot_jpa_2.0/actions/workflows/continuous-deployment.yml/badge.svg?branch=main)](https://github.com/marciocleydev/workshop_springBoot_jpa_2.0/actions/workflows/continuous-deployment.yml)
