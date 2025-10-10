@@ -17,16 +17,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v2
 
       - name: setup java 21
         uses: actions/setup-java@v3
@@ -50,38 +50,39 @@ jobs:
         working-directory: ./SpringSalesApp
         run: mvn verify
 
-      - name: Tag and Push Docker Image to Amazon Container Registry -ECR
-        run: | #adiciona '|' para informar que é um comando multi-linha
-          #cria tag com o id do github actions, para cada execução ter uma versão com o numero do job
-          docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{secrets.IMAGE_REPO_URL}}:latest
-          docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{secrets.IMAGE_REPO_URL}}:${{github.run_id}}
-          
-          docker push ${{secrets.IMAGE_REPO_URL}}:latest
-          docker push ${{secrets.IMAGE_REPO_URL}}:${{github.run_id}} #variavel de ambiente do github actions
-
-      - name: Download task definition
-        run: |
-         aws ecs describe-task-definition --task-definition ${{secrets.TASK_DEFINITION_NAME}} --query taskDefinition > task-definition.json
-
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-         task-definition: task-definition.json
-         container-name: ${{secrets.CONTAINER_NAME}}
-         image: ${{secrets.IMAGE_REPO_URL}}:latest
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{secrets.SERVICE_NAME}}
-          cluster: ${{secrets.CLUSTER_NAME}}
-          wait-for-service-stability: true
-
       - name: Push to Docker Hub Container Registry
         run: | #adiciona '|' para informar que é um comando multi-linha
           docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{ secrets.DOCKER_USERNAME }}/salesapp:${{github.run_id}}
           
           docker push ${{ secrets.DOCKER_USERNAME }}/salesapp:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/salesapp:${{github.run_id}} #variavel de ambiente do github actions
+
+
+#      - name: Tag and Push Docker Image to Amazon Container Registry -ECR
+#        run: | #adiciona '|' para informar que é um comando multi-linha
+          #cria tag com o id do github actions, para cada execução ter uma versão com o numero do job
+#          docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{secrets.IMAGE_REPO_URL}}:latest
+#          docker tag ${{ secrets.DOCKER_USERNAME }}/salesapp:latest ${{secrets.IMAGE_REPO_URL}}:${{github.run_id}}
+          
+#          docker push ${{secrets.IMAGE_REPO_URL}}:latest
+#          docker push ${{secrets.IMAGE_REPO_URL}}:${{github.run_id}} #variavel de ambiente do github actions
+
+#      - name: Download task definition
+#        run: |
+#         aws ecs describe-task-definition --task-definition ${{secrets.TASK_DEFINITION_NAME}} --query taskDefinition > task-definition.json
+
+#      - name: Fill in the new image ID in the Amazon ECS task definition
+#        id: task-def
+#        uses: aws-actions/amazon-ecs-render-task-definition@v1
+#        with:
+#         task-definition: task-definition.json
+#         container-name: ${{secrets.CONTAINER_NAME}}
+#         image: ${{secrets.IMAGE_REPO_URL}}:latest
+
+#      - name: Deploy Amazon ECS task definition
+#        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+#        with:
+#          task-definition: ${{ steps.task-def.outputs.task-definition }}
+#          service: ${{secrets.SERVICE_NAME}}
+#          cluster: ${{secrets.CLUSTER_NAME}}
+#          wait-for-service-stability: true
